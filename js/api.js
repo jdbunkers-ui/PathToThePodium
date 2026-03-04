@@ -24,3 +24,34 @@ async function testSupabaseConnection() {
 
 // RUN THE TEST
 testSupabaseConnection();
+
+// ------------------------------------------------------------
+// Generic view query helper
+// ------------------------------------------------------------
+export async function queryView(viewName, filters = {}, orderBy = null) {
+
+  let query = supabase
+    .from(viewName)
+    .select('*')
+
+  // Apply filters
+  Object.entries(filters).forEach(([column, value]) => {
+    if (value !== null && value !== undefined) {
+      query = query.eq(column, value)
+    }
+  })
+
+  // Apply ordering
+  if (orderBy) {
+    query = query.order(orderBy.column, { ascending: orderBy.ascending ?? true })
+  }
+
+  const { data, error } = await query
+
+  if (error) {
+    console.error("Supabase Query Error:", error)
+    return []
+  }
+
+  return data
+}
