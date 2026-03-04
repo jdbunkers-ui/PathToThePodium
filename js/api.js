@@ -7,3 +7,17 @@ const db = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_ANON_KEY
 );
+
+// ---------- TEST CONNECTION ----------
+
+async function testSupabaseConnection() {
+
+  const { data, error } = await db
+    .from("v_college_team_bonus_points")
+    .select("*")
+    .limit(5);
+
+  console.log("Supabase TEST DATA:", data);
+  console.log("Supabase TEST ERROR:", error);
+
+}
