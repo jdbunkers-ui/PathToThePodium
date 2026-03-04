@@ -21,3 +21,6 @@ async function testSupabaseConnection() {
   console.log("Supabase TEST ERROR:", error);
 
 }
+
+// RUN THE TEST
+testSupabaseConnection();
