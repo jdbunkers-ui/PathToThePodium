@@ -67,7 +67,7 @@ function renderCollegeStandings(rows) {
           ${rows.map((r, i) => `
             <tr>
               <td>${i + 1}</td>
-              <td>${safeText(r.college_na,e || r.college_team_name || r.school_name || "—")}</td>
+              <td>${safeText(r.college_name || r.college_team_name || r.school_name || "—")}</td>
               <td style="text-align:right;"><strong>${fmtPoints(r.total_points)}</strong></td>
             </tr>
           `).join("")}
