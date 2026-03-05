@@ -8,31 +8,26 @@ const db = window.supabase.createClient(
   SUPABASE_ANON_KEY
 );
 
-// ---------- TEST CONNECTION ----------
-
-async function testSupabaseConnection() {
-
-  const { data, error } = await db
-    .from("v_college_team_bonus_points")
-    .select("*")
-    .limit(5);
-
-  console.log("Supabase TEST DATA:", data);
-  console.log("Supabase TEST ERROR:", error);
-
-}
-
-testSupabaseConnection();
+// ------------------------------------------------------------
+// Optional: TEST CONNECTION (disable for prod)
+// ------------------------------------------------------------
+// async function testSupabaseConnection() {
+//   const { data, error } = await db
+//     .from("v_college_team_bonus_points")
+//     .select("*")
+//     .limit(5);
+//
+//   console.log("Supabase TEST DATA:", data);
+//   console.log("Supabase TEST ERROR:", error);
+// }
+// testSupabaseConnection();
 
 
 // ------------------------------------------------------------
 // Generic view query helper
 // ------------------------------------------------------------
 async function queryView(viewName, filters = {}, orderBy = null) {
-
-  let query = db
-    .from(viewName)
-    .select("*");
+  let query = db.from(viewName).select("*");
 
   Object.entries(filters).forEach(([column, value]) => {
     if (value !== null && value !== undefined) {
@@ -51,15 +46,18 @@ async function queryView(viewName, filters = {}, orderBy = null) {
     return [];
   }
 
+  return data || [];
+}
 
-  // =============================================
-  // RPC helper
-  // =============================================
-  async function callRpc(fnName, params) {
-    const { data, error } = await supabase.rpc(fnName, params);
-    if (error) throw error;
-    return data;
+
+// ------------------------------------------------------------
+// RPC helper (for writes like submit_fantasy_team)
+// ------------------------------------------------------------
+async function callRpc(fnName, params = {}) {
+  const { data, error } = await db.rpc(fnName, params);
+  if (error) {
+    console.error("Supabase RPC Error:", error);
+    throw error;
   }
-  
   return data;
 }
