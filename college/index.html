@@ -2,26 +2,71 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+
+  <!-- Mobile-first scaling -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <title>College Standings</title>
+
+  <!-- Global PTTP stylesheet -->
   <link rel="stylesheet" href="../css/site.css" />
-  <link rel="icon" href="/PathtothePodium/favicon.ico">  
+
+  <!-- Repo favicon (GitHub Pages path) -->
+  <link rel="icon" href="/PathtothePodium/favicon.ico">
 </head>
+
 <body>
+
+  <!-- Navigation injected by /js/site-chrome.js -->
   <header id="site-nav"></header>
 
   <main class="container">
-    <h1>Under construction</h1>
+
+    <!-- Static page heading -->
+    <h1>College Standings</h1>
+
+    <!--
+      PRIMARY RENDER TARGET
+
+      /college/page.js will render the leaderboard here.
+      All pages share this container so:
+        • errors render consistently
+        • loading states appear here
+        • debugging stays simple
+    -->
     <div id="page-root"></div>
+
   </main>
 
+
+  <!-- ===================================================== -->
+  <!-- Shared Script Layer                                   -->
+  <!-- ===================================================== -->
+
+  <!-- Utility helpers (URL params, navigation helpers, etc.) -->
   <script src="../js/utils.js"></script>
+
+  <!-- Navigation chrome renderer -->
   <script src="../js/site-chrome.js"></script>
 
+
+  <!-- ===================================================== -->
+  <!-- Data Layer                                            -->
+  <!-- ===================================================== -->
+
+  <!-- Supabase client library -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- PTTP API wrapper (queryView helper) -->
   <script src="../js/api.js"></script>
-    
-  <script src="./page.js"></script> <!-- optional per-page JS -->
+
+
+  <!-- ===================================================== -->
+  <!-- Page Controller                                       -->
+  <!-- ===================================================== -->
+
+  <!-- Page-specific logic (query + render) -->
+  <script src="./page.js"></script>
+
 </body>
 </html>
-
