@@ -1,1 +1,110 @@
+// /leaders/page.js
+// -------------------------------------------------------------
+// League Wrestler Leaders Page Controller
+// -------------------------------------------------------------
+// Purpose:
+//   • Query Supabase view: v_league_wrestler_leaders
+//   • Filter by league via URL param: ?league=<fantasy_league_guid>
+//   • Render a leaderboard table into #page-root
+//
+// Dependencies (classic scripts; globals must exist):
+//   • utils.js: requireParam(), getQueryParam()
+//   • api.js: queryView()
+// -------------------------------------------------------------
 
+(async function initLeadersPage() {
+  const root = document.getElementById("page-root");
+  if (!root) return;
+
+  root.innerHTML = `<p>Loading leaders…</p>`;
+
+  try {
+    // League context is required for this page
+    const leagueGuid = requireParam("league");
+
+    // Optional: add later if/when your view supports it
+    // Example URL: /leaders/?league=...&weight=141
+    const weight = getQueryParam("weight");
+
+    const filters = {
+      fantasy_league_guid: leagueGuid
+    };
+
+    // If your view includes a weight column, uncomment + adjust column name:
+    // if (weight) filters.weight_lbs = Number(weight);
+    // or: filters.weight_class = String(weight);
+
+    // Sort by total points descending (adjust column name if needed)
+    const rows = await queryView(
+      "v_league_wrestler_leaders",
+      filters,
+      { column: "total_points", ascending: false }
+    );
+
+    renderLeaders(rows);
+
+  } catch (err) {
+    console.error("Leaders page failed to load:", err);
+    if (root.innerHTML.trim() === "") {
+      root.innerHTML = `<p>Unable to load leaders.</p>`;
+    }
+  }
+})();
+
+function renderLeaders(rows) {
+  const root = document.getElementById("page-root");
+  if (!root) return;
+
+  if (!rows || rows.length === 0) {
+    root.innerHTML = `<p>No leader data found for this league.</p>`;
+    return;
+  }
+
+  // NOTE ON COLUMN NAMES:
+  // Your view might use different names (examples below).
+  // Update fallbacks once you confirm the returned columns in console.
+  root.innerHTML = `
+    <h2>Wrestler Leaders</h2>
+
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Wrestler</th>
+            <th>Team</th>
+            <th style="text-align:right;">Points</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          ${rows.map((r, i) => `
+            <tr>
+              <td>${i + 1}</td>
+              <td>${safeText(r.wrestler_name || r.display_name || "—")}</td>
+              <td>${safeText(r.fantasy_team_name || r.team_name || "—")}</td>
+              <td style="text-align:right;"><strong>${fmtPoints(r.total_points || r.points)}</strong></td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+/* -------------------------------------------------------------
+   Helpers (kept local for now)
+------------------------------------------------------------- */
+
+function fmtPoints(value) {
+  if (value === null || value === undefined || value === "") return "0.0";
+  const n = Number(value);
+  if (Number.isNaN(n)) return String(value);
+  return n.toFixed(1);
+}
+
+function safeText(value) {
+  const div = document.createElement("div");
+  div.textContent = value ?? "";
+  return div.innerHTML;
+}
