@@ -17,7 +17,7 @@
   const WEIGHTS = [125,133,141,149,157,165,174,184,197,285];
 
   root.innerHTML = `
-    <div class="card">
+    <div class="form-card">
       <h2>Add Team</h2>
 
       <label class="label">League Name</label>
