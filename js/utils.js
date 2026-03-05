@@ -11,21 +11,22 @@ function requireParam(name) {
 
   if (!value) {
     console.error(`Missing required parameter: ${name}`);
-    document.getElementById("page-root").innerHTML =
-      `<p>Missing required parameter: ${name}</p>`;
+
+    const root = document.getElementById("page-root");
+    if (root) {
+      root.innerHTML = `<p>Missing required parameter: ${name}</p>`;
+    }
+
     throw new Error(`Missing parameter ${name}`);
   }
 
   return value;
 }
 
-
 /*
 Helper: navigate to another page while preserving the league parameter
 */
-
 function navigateWithLeague(path) {
-
   const league = getQueryParam("league");
 
   if (!league) {
@@ -39,18 +40,13 @@ function navigateWithLeague(path) {
   window.location.href = url.pathname + url.search;
 }
 
-
 /*
 Helper: build a link that preserves league parameter
 */
-
 function buildLeagueLink(path) {
-
   const league = getQueryParam("league");
 
-  if (!league) {
-    return path;
-  }
+  if (!league) return path;
 
   const url = new URL(path, window.location.origin);
   url.searchParams.set("league", league);

@@ -1,38 +1,132 @@
-// /js/site-chrome.js
-(function () {
-  const params = new URLSearchParams(window.location.search);
-  const league = params.get("league");
+/* =========================================================
+   PTTP Global Styles
+   ========================================================= */
 
-  // Pages that use the global nav (no league param)
-  const globalNav = [
-    { label: "HOME", href: "/index.html" },
-    { label: "COLLEGE", href: "/college/index.html" },
-    { label: "RESULTS", href: "/posted/index.html" },
-    { label: "CREATE", href: "/new_league/index.html" },
-    { label: "FAQ", href: "/FAQ/index.html" },
-    { label: "ABOUT", href: "/about/index.html" },
-  ];
+:root {
+  --bg: #0f172a;
+  --bg-soft: #1e293b;
+  --text: #e5e7eb;
+  --text-dim: #94a3b8;
+  --accent: #38bdf8;
+  --border: #334155;
+}
 
-  // Pages that use the league nav (league param)
-  const leagueNav = [
-    { label: "SCOREBOARD", href: "/scoreboard/index.html" },
-    { label: "STATS", href: "/team_stats/index.html" },
-    { label: "LEADERBOARD", href: "/leaders/index.html" },
-    { label: "COLLISIONS", href: "/collision/index.html" },
-  ];
+* {
+  box-sizing: border-box;
+}
 
-  const navItems = league ? leagueNav : globalNav;
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
 
-  // Attach league query param to league-nav links
-  const links = navItems.map(item => {
-    const url = new URL(item.href, window.location.origin);
-    if (league) url.searchParams.set("league", league);
-    return `<a class="nav-link" href="${url.pathname}${url.search}">${item.label}</a>`;
-  }).join("");
+/* =========================================================
+   Layout
+   ========================================================= */
 
-  const el = document.getElementById("site-nav");
-  if (el) {
-    el.innerHTML = `<nav class="nav">${links}</nav>`;
-  }
-})();
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 24px;
+}
 
+h1, h2, h3 {
+  margin-top: 0;
+}
+
+/* =========================================================
+   Navigation
+   ========================================================= */
+
+.nav {
+  display: flex;
+  gap: 20px;
+  padding: 16px 24px;
+  background: var(--bg-soft);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-link {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.nav-link:hover {
+  color: var(--accent);
+}
+
+/* =========================================================
+   Cards (Landing Page)
+   ========================================================= */
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  display: block;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-soft);
+  text-decoration: none;
+  color: var(--text);
+  transition: transform 0.1s ease, border 0.1s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+}
+
+.card-title {
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.card-subtitle {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.card-cta {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--accent);
+}
+
+/* =========================================================
+   Tables
+   ========================================================= */
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+}
+
+.table th,
+.table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.table th {
+  text-align: left;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.table tr:hover {
+  background: rgba(255,255,255,0.03);
+}

@@ -2,26 +2,71 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+
+  <!-- Mobile-first scaling -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <title>Fantasy Team Stats</title>
-  
+
+  <!-- Global PTTP stylesheet -->
   <link rel="stylesheet" href="../css/site.css" />
+
+  <!-- GitHub Pages repo favicon -->
   <link rel="icon" href="/PathtothePodium/favicon.ico">
 </head>
+
 <body>
+
+  <!-- Navigation injected by /js/site-chrome.js -->
   <header id="site-nav"></header>
 
   <main class="container">
-    <h1>Under construction</h1>
+
+    <!-- Static page heading -->
+    <h1>Fantasy Team Stats</h1>
+
+    <!--
+      PRIMARY PAGE RENDER TARGET
+
+      /team_stats/page.js will render stats here.
+      Standardized across pages for consistent:
+        • loading states
+        • error rendering
+        • debugging
+    -->
     <div id="page-root"></div>
+
   </main>
 
+
+  <!-- ===================================================== -->
+  <!-- Shared Script Layer                                   -->
+  <!-- ===================================================== -->
+
+  <!-- Utility helpers -->
   <script src="../js/utils.js"></script>
+
+  <!-- Navigation chrome renderer -->
   <script src="../js/site-chrome.js"></script>
 
+
+  <!-- ===================================================== -->
+  <!-- Data Layer                                            -->
+  <!-- ===================================================== -->
+
+  <!-- Supabase client library -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- PTTP API wrapper (queryView helper) -->
   <script src="../js/api.js"></script>
-  
-  <script src="./page.js"></script> <!-- optional per-page JS -->
+
+
+  <!-- ===================================================== -->
+  <!-- Page Controller                                       -->
+  <!-- ===================================================== -->
+
+  <!-- Page-specific logic -->
+  <script src="./page.js"></script>
+
 </body>
 </html>

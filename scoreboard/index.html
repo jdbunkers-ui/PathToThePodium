@@ -2,25 +2,128 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+
+  <!-- 
+    Mobile-first layout support.
+    Ensures proper scaling on phones and tablets.
+  -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <title>Scoreboard</title>
+
+  <!--
+    Global stylesheet shared across all PTTP pages.
+    Future UI polish will happen primarily inside site.css.
+  -->
   <link rel="stylesheet" href="../css/site.css" />
-  <link rel="icon" href="/PathtothePodium/favicon.ico">  
+
+  <!--
+    Repo-relative favicon.
+    GitHub Pages requires the repo name in the path.
+  -->
+  <link rel="icon" href="/PathtothePodium/favicon.ico">
 </head>
+
 <body>
+
+  <!--
+    Navigation placeholder.
+
+    site-chrome.js dynamically injects the navigation
+    menu here so every page shares the same nav layout.
+  -->
   <header id="site-nav"></header>
 
   <main class="container">
-    <h1>Under construction</h1>
+
+    <!--
+      Static page heading.
+      The actual scoreboard table will render below.
+    -->
+    <h1>Scoreboard</h1>
+
+    <!--
+      PRIMARY PAGE RENDER TARGET
+
+      All dynamic content for this page is rendered here by:
+        /scoreboard/page.js
+
+      We standardize this container across all pages so that:
+
+      • requireParam() can render errors here
+      • loading states can render here
+      • page content rendering stays consistent
+      • debugging becomes easier
+    -->
     <div id="page-root"></div>
+
   </main>
 
+
+  <!-- ===================================================== -->
+  <!-- Shared Script Layer                                   -->
+  <!-- ===================================================== -->
+
+  <!--
+    Shared utility helpers.
+
+    Provides:
+      getQueryParam()
+      requireParam()
+      navigateWithLeague()
+      buildLeagueLink()
+  -->
   <script src="../js/utils.js"></script>
+
+  <!--
+    Shared site chrome.
+
+    Responsible for:
+      • navigation bar rendering
+      • layout helpers
+      • global page behavior
+  -->
   <script src="../js/site-chrome.js"></script>
 
+
+  <!-- ===================================================== -->
+  <!-- Data Layer                                            -->
+  <!-- ===================================================== -->
+
+  <!--
+    Supabase client library.
+
+    Must load BEFORE api.js so that:
+      window.supabase.createClient()
+    is available.
+  -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!--
+    PTTP API layer.
+
+    Provides:
+      queryView(viewName, filters, orderBy)
+
+    This is the ONLY place that communicates
+    with the Supabase database.
+  -->
   <script src="../js/api.js"></script>
-  
-  <script src="./page.js"></script> <!-- optional per-page JS -->
+
+
+  <!-- ===================================================== -->
+  <!-- Page Logic                                            -->
+  <!-- ===================================================== -->
+
+  <!--
+    Page-specific controller.
+
+    Responsibilities:
+      • read URL parameters
+      • call queryView()
+      • render scoreboard UI
+  -->
+  <script src="./page.js"></script>
+
 </body>
 </html>

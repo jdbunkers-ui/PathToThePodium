@@ -22,5 +22,34 @@ async function testSupabaseConnection() {
 
 }
 
-// RUN THE TEST
 testSupabaseConnection();
+
+
+// ------------------------------------------------------------
+// Generic view query helper
+// ------------------------------------------------------------
+async function queryView(viewName, filters = {}, orderBy = null) {
+
+  let query = db
+    .from(viewName)
+    .select("*");
+
+  Object.entries(filters).forEach(([column, value]) => {
+    if (value !== null && value !== undefined) {
+      query = query.eq(column, value);
+    }
+  });
+
+  if (orderBy) {
+    query = query.order(orderBy.column, { ascending: orderBy.ascending ?? true });
+  }
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.error("Supabase Query Error:", error);
+    return [];
+  }
+
+  return data;
+}
