@@ -1,20 +1,40 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
+
+  <!-- Mobile-first scaling -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <title>Add Team</title>
+
+  <!-- Global PTTP stylesheet -->
   <link rel="stylesheet" href="../css/site.css" />
+
+  <!-- Repo favicon (GitHub Pages path) -->
   <link rel="icon" href="/PathToThePodium/favicon.ico">
 </head>
-<body>
-  <div id="page-root"></div>
 
-  <!-- Shared scripts -->
+<body>
+
+  <!-- Navigation injected by /js/site-chrome.js -->
+  <header id="site-nav"></header>
+
+  <main class="container">
+    <h1>Add Team</h1>
+    <div id="page-root"></div>
+  </main>
+
+  <!-- Shared Script Layer -->
   <script src="../js/utils.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>  
+  <script src="../js/site-chrome.js"></script>
+
+  <!-- Data Layer -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../js/api.js"></script>
 
-  <!-- Page controller -->
+  <!-- Page Controller -->
   <script src="./page.js"></script>
+
 </body>
 </html>
