@@ -71,7 +71,11 @@ function renderTeamRoster(rows) {
           ${rows.map(r => `
             <tr>
               <td>${safeText(r.weight_lbs || "—")}</td>
-              <td>${safeText(r.wrestler_name || "—")}</td>
+              <td>
+                <a href="../wrestler/?wrestler=${r.wrestler_guid}">
+                  ${safeText(r.wrestler_name || "—")}
+                </a>
+              </td>
               <td>${safeText(r.college_team_name || "—")}</td>
               <td style="text-align:right;"><strong>${fmtPoints(r.total_points)}</strong></td>
             </tr>
