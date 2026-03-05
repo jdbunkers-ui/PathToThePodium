@@ -2,6 +2,15 @@
   const root = document.getElementById("page-root");
   if (!root) return;
 
+  function escapeHtml(s) {
+    return String(s ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
   // --- Helpers (use your utils.js if you already have equivalents) ---
   function getParam(name) {
     const u = new URL(window.location.href);
@@ -14,7 +23,7 @@
     return;
   }
 
-  const WEIGHTS = [125,133,141,149,157,165,174,184,197,285];
+  const WEIGHTS = [125, 133, 141, 149, 157, 165, 174, 184, 197, 285];
 
   root.innerHTML = `
     <div class="form-card">
@@ -48,15 +57,6 @@
     msgEl.className = isError ? "msg error" : "msg";
   }
 
-  function escapeHtml(s) {
-    return String(s)
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
-  }
-
   // 1) Load wrestlers once
   setMsg("Loading wrestlers…");
   let rows = [];
@@ -83,7 +83,9 @@
   // 3) Render 10 dropdowns
   weightsWrap.innerHTML = WEIGHTS.map((w) => {
     const opts = (byWeight.get(w) || []).map((r) => {
-      const label = r.college_team ? `${r.wrestler_name} (${r.college_team})` : r.wrestler_name;
+      const label = r.college_team
+        ? `${r.wrestler_name} (${r.college_team})`
+        : r.wrestler_name;
       return `<option value="${r.wrestler_guid}">${escapeHtml(label)}</option>`;
     }).join("");
 
@@ -112,12 +114,8 @@
       picks[w] = val;
     }
 
-    // NOTE: use your actual “active year” value here.
-    // If you already keep it in a URL param or operational table, we can wire it in later.
-    const year = new Date().getFullYear();
-
+    // Active year is controlled by operational.v_active_year (config) inside the RPC
     return {
-      p_year: year,
       p_league_name: leagueName,
       p_team_name: teamName,
 
@@ -146,16 +144,12 @@
 
       if (closeAfter) {
         setMsg(`Saved (stg_id=${stgId}). Closing…`);
-        try {
-          window.close();
-        } catch (e) {}
-        // Fallback if the browser blocks closing
+        try { window.close(); } catch (e) {}
         setTimeout(() => {
           root.innerHTML = `<p>Saved (stg_id=${stgId}). You can close this window.</p>`;
         }, 500);
       } else {
         setMsg(`Saved (stg_id=${stgId}). Add the next team.`);
-        // Clear team inputs for next entry
         teamNameEl.value = "";
         for (const w of WEIGHTS) {
           const sel = document.getElementById(`w_${w}`);
