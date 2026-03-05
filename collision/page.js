@@ -6,6 +6,7 @@
 //   • Query Supabase view: v_league_collisions
 //   • Filter by league via URL param: ?league=<fantasy_league_guid>
 //   • Render upcoming drafted-vs-drafted matches
+//   • Link red/green wrestlers to /wrestler/?wrestler=<wrestler_guid>
 //
 // Dependencies (classic scripts):
 //   • utils.js: requireParam()
@@ -69,9 +70,11 @@ function renderCollisions(rows) {
           ${rows.map(r => `
             <tr>
               <td>${safeText(r.weight_class || r.weight_lbs || "—")}</td>
-              <td>${safeText(r.red_wrestler_name || "—")}</td>
+
+              <td>${wrestlerLink(r.red_wrestler_guid, r.red_wrestler_name || "—")}</td>
               <td>${safeText(r.red_team_name || "—")}</td>
-              <td>${safeText(r.green_wrestler_name || "—")}</td>
+
+              <td>${wrestlerLink(r.green_wrestler_guid, r.green_wrestler_name || "—")}</td>
               <td>${safeText(r.green_team_name || "—")}</td>
             </tr>
           `).join("")}
@@ -85,6 +88,16 @@ function renderCollisions(rows) {
 /* -------------------------------------------------------------
    Helpers
 ------------------------------------------------------------- */
+
+function wrestlerLink(wrestlerGuid, label) {
+  if (!wrestlerGuid) return safeText(label);
+
+  return `
+    <a href="../wrestler/?wrestler=${encodeURIComponent(wrestlerGuid)}">
+      ${safeText(label)}
+    </a>
+  `;
+}
 
 function safeText(value) {
   const div = document.createElement("div");
