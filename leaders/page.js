@@ -81,11 +81,20 @@ function renderLeaders(rows) {
           ${rows.map((r, i) => `
             <tr>
               <td>${i + 1}</td>
-              <td>${safeText(r.wrestler_name || r.display_name || "—")}</td>
+          
+              <td>
+                <a href="../wrestler/?wrestler=${r.wrestler_guid}">
+                  ${safeText(r.wrestler_name || r.display_name || "—")}
+                </a>
+              </td>
+          
               <td>${safeText(r.fantasy_team_name || r.team_name || "—")}</td>
-              <td style="text-align:right;"><strong>${fmtPoints(r.total_points || r.points)}</strong></td>
+          
+              <td style="text-align:right;">
+                <strong>${fmtPoints(r.total_points || r.points)}</strong>
+              </td>
             </tr>
-          `).join("")}
+          `).join("")}        
         </tbody>
       </table>
     </div>
