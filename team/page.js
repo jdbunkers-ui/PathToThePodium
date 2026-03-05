@@ -6,6 +6,7 @@
 //   • Query Supabase view: v_team_roster_points
 //   • Filter by team via URL param: ?team=<fantasy_team_guid>
 //   • Render roster + points into #page-root
+//   • Link wrestler names to /wrestler/?wrestler=<wrestler_guid>
 //
 // Dependencies (classic scripts):
 //   • utils.js: requireParam()
@@ -71,11 +72,13 @@ function renderTeamRoster(rows) {
           ${rows.map(r => `
             <tr>
               <td>${safeText(r.weight_lbs || "—")}</td>
+
               <td>
-                <a href="../wrestler/?wrestler=${r.wrestler_guid}">
+                <a href="../wrestler/?wrestler=${encodeURIComponent(r.wrestler_guid)}">
                   ${safeText(r.wrestler_name || "—")}
                 </a>
               </td>
+
               <td>${safeText(r.college_team_name || "—")}</td>
               <td style="text-align:right;"><strong>${fmtPoints(r.total_points)}</strong></td>
             </tr>
@@ -94,7 +97,7 @@ function renderTeamRoster(rows) {
 function fmtPoints(value) {
   if (value === null || value === undefined) return "0.0";
   const n = Number(value);
-  if (Number.isNaN(n)) return value;
+  if (Number.isNaN(n)) return String(value);
   return n.toFixed(1);
 }
 
