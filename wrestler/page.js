@@ -6,9 +6,11 @@
 //   • Query Supabase view: v_wrestler_match_history
 //   • Filter by wrestler via URL param: ?wrestler=<wrestler_guid>
 //   • Render match history table
+//   • Add "Back to Scoreboard" link when ?league=<fantasy_league_guid> is present
+//   • Make opponent clickable when opponent_guid (or opponent_wrestler_guid) exists
 //
 // Dependencies (classic scripts):
-//   • utils.js: requireParam()
+//   • utils.js: requireParam(), getQueryParam()
 //   • api.js: queryView()
 // -------------------------------------------------------------
 
@@ -52,8 +54,15 @@ function renderWrestlerHistory(rows) {
 
   const wrestlerName = rows[0].wrestler_name || "Wrestler";
 
+  // If league context exists, provide an easy way back to the scoreboard
+  const league = getQueryParam("league");
+  const backLink = league
+    ? `<p><a href="../scoreboard/?league=${encodeURIComponent(league)}">← Back to Scoreboard</a></p>`
+    : "";
+
   root.innerHTML = `
     <h2>${safeText(wrestlerName)}</h2>
+    ${backLink}
 
     <div class="table-wrap">
       <table class="table">
@@ -71,7 +80,15 @@ function renderWrestlerHistory(rows) {
           ${rows.map(r => `
             <tr>
               <td>${safeText(r.round_name || "—")}</td>
-              <td>${safeText(r.opponent_name || "—")}</td>
+
+              <td>
+                ${wrestlerLink(
+                  r.opponent_guid || r.opponent_wrestler_guid,
+                  r.opponent_name || "—",
+                  league
+                )}
+              </td>
+
               <td>${safeText(r.opponent_school || "—")}</td>
               <td>${safeText(r.result || "—")}</td>
               <td style="text-align:right;">${fmt(r.points)}</td>
@@ -87,6 +104,19 @@ function renderWrestlerHistory(rows) {
 /* -------------------------------------------------------------
    Helpers
 ------------------------------------------------------------- */
+
+function wrestlerLink(wrestlerGuid, label, league) {
+  // If the view doesn't provide an opponent guid, render plain text
+  if (!wrestlerGuid) return safeText(label);
+
+  const url = new URL("../wrestler/", window.location.href);
+  url.searchParams.set("wrestler", wrestlerGuid);
+
+  // Preserve league context if present so "Back to Scoreboard" keeps working
+  if (league) url.searchParams.set("league", league);
+
+  return `<a href="${url.pathname}${url.search}">${safeText(label)}</a>`;
+}
 
 function fmt(value) {
   if (value === null || value === undefined) return "0";
