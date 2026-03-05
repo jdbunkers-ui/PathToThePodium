@@ -6,6 +6,7 @@
 //   • Query Supabase view: v_posted_matches_current_year
 //   • Optionally filter by weight/session via query params
 //   • Render match results into #page-root
+//   • Link red/green/winner names to /wrestler/?wrestler=<wrestler_guid>
 //
 // Dependencies (classic scripts):
 //   • api.js: queryView()
@@ -77,9 +78,13 @@ function renderPostedMatches(rows) {
           ${rows.map(r => `
             <tr>
               <td>${safeText(r.weight_class || r.weight_lbs || "—")}</td>
-              <td>${safeText(r.red_wrestler_name || "—")}</td>
-              <td>${safeText(r.green_wrestler_name || "—")}</td>
-              <td>${safeText(r.winner_name || "—")}</td>
+
+              <td>${wrestlerLink(r.red_wrestler_guid, r.red_wrestler_name || "—")}</td>
+
+              <td>${wrestlerLink(r.green_wrestler_guid, r.green_wrestler_name || "—")}</td>
+
+              <td>${wrestlerLink(r.winner_guid || r.winner_wrestler_guid, r.winner_name || "—")}</td>
+
               <td>${safeText(r.result || "—")}</td>
             </tr>
           `).join("")}
@@ -93,6 +98,17 @@ function renderPostedMatches(rows) {
 /* -------------------------------------------------------------
    Helpers
 ------------------------------------------------------------- */
+
+function wrestlerLink(wrestlerGuid, label) {
+  // If we don't have a guid, render plain text (no broken links)
+  if (!wrestlerGuid) return safeText(label);
+
+  return `
+    <a href="../wrestler/?wrestler=${encodeURIComponent(wrestlerGuid)}">
+      ${safeText(label)}
+    </a>
+  `;
+}
 
 function safeText(value) {
   const div = document.createElement("div");
