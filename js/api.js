@@ -51,5 +51,15 @@ async function queryView(viewName, filters = {}, orderBy = null) {
     return [];
   }
 
+
+  // =============================================
+  // RPC helper
+  // =============================================
+  async function callRpc(fnName, params) {
+    const { data, error } = await supabase.rpc(fnName, params);
+    if (error) throw error;
+    return data;
+  }
+  
   return data;
 }
