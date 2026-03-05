@@ -6,6 +6,7 @@
 //   • Query Supabase view: v_league_wrestler_leaders
 //   • Filter by league via URL param: ?league=<fantasy_league_guid>
 //   • Render a leaderboard table into #page-root
+//   • Link wrestler names to /wrestler/?wrestler=<wrestler_guid>
 //
 // Dependencies (classic scripts; globals must exist):
 //   • utils.js: requireParam(), getQueryParam()
@@ -60,9 +61,6 @@ function renderLeaders(rows) {
     return;
   }
 
-  // NOTE ON COLUMN NAMES:
-  // Your view might use different names (examples below).
-  // Update fallbacks once you confirm the returned columns in console.
   root.innerHTML = `
     <h2>Wrestler Leaders</h2>
 
@@ -81,20 +79,17 @@ function renderLeaders(rows) {
           ${rows.map((r, i) => `
             <tr>
               <td>${i + 1}</td>
-          
+
               <td>
-                <a href="../wrestler/?wrestler=${r.wrestler_guid}">
+                <a href="../wrestler/?wrestler=${encodeURIComponent(r.wrestler_guid)}">
                   ${safeText(r.wrestler_name || r.display_name || "—")}
                 </a>
               </td>
-          
+
               <td>${safeText(r.fantasy_team_name || r.team_name || "—")}</td>
-          
-              <td style="text-align:right;">
-                <strong>${fmtPoints(r.total_points || r.points)}</strong>
-              </td>
+              <td style="text-align:right;"><strong>${fmtPoints(r.total_points || r.points)}</strong></td>
             </tr>
-          `).join("")}        
+          `).join("")}
         </tbody>
       </table>
     </div>
