@@ -33,8 +33,8 @@
       return;
     }
 
-    // Carry league_name forward to add_team
-    const url = `/add_team/?league_name=${encodeURIComponent(leagueName)}`;
+    // GitHub Pages-safe relative navigation
+    const url = `../add_team/?league_name=${encodeURIComponent(leagueName)}`;
     window.location.href = url;
   });
 })();
