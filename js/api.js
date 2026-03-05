@@ -29,7 +29,7 @@ testSupabaseConnection();
 // ------------------------------------------------------------
 // Generic view query helper
 // ------------------------------------------------------------
-export async function queryView(viewName, filters = {}, orderBy = null) {
+async function queryView(viewName, filters = {}, orderBy = null) {
 
   let query = db
     .from(viewName)
