@@ -8,6 +8,7 @@
 //   - utils.js: requireParam(), getQueryParam()
 //   - api.js: queryView()
 
+
 (async function initScoreboardPage() {
   const root = document.getElementById("page-root");
   if (!root) return;
@@ -82,7 +83,11 @@ function renderScoreboard(rows) {
         <tbody>
           ${rows.map(r => `
             <tr>
-              <td>${safeText(r.fantasy_team_name || r.team_name || "—")}</td>
+              <td>
+                <a href="../team/?team=${r.fantasy_team_guid}&league=${getQueryParam("league")}">
+                  ${safeText(r.fantasy_team_name || r.team_name || "—")}
+                </a>
+              </td>
               <td style="text-align:right;">${fmtPoints(r.consolation_points)}</td>
               <td style="text-align:right;">${fmtPoints(r.championship_points)}</td>
               <td style="text-align:right;">${fmtPoints(r.bonus_points)}</td>
