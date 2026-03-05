@@ -3,7 +3,7 @@
   if (!root) return;
 
   root.innerHTML = `
-    <div class="card">
+    <div class="form-card">
       <h2>Create a New League</h2>
 
       <label class="label">League Name</label>
