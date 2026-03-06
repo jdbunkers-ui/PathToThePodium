@@ -18,7 +18,7 @@
   ];
 
   const leagueNav = [
-    { label: "HOME", href: "index.html" },   // ← Added
+    { label: "HOME", href: "index.html" },
     { label: "SCOREBOARD", href: "scoreboard/index.html" },
     { label: "STATS", href: "team_stats/index.html" },
     { label: "LEADERBOARD", href: "leaders/index.html" },
@@ -39,7 +39,14 @@
   }).join("");
 
   const el = document.getElementById("site-nav");
-  if (el) el.innerHTML = `<nav class="nav">${links}</nav>`;
+  if (el) {
+    el.innerHTML = `
+      <div class="site-header-inner">
+        <nav class="nav">${links}</nav>
+        <img src="${basePath}/images/podium.png" alt="Champion Wrestler" class="header-podium">
+      </div>
+    `;
+  }
 })();
 
 // -------------------------------------------------------------
