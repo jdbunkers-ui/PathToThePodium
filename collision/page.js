@@ -26,7 +26,8 @@
 
     const rows = await queryView(
       "v_league_collisions",
-      { fantasy_league_guid: leagueGuid }
+      { fantasy_league_guid: leagueGuid },
+      { column: "weight_lbs", ascending: true }
     );
 
     renderCollisions(rows);
@@ -69,13 +70,13 @@ function renderCollisions(rows) {
         <tbody>
           ${rows.map(r => `
             <tr>
-              <td>${safeText(r.weight_class || r.weight_lbs || "—")}</td>
+              <td>${safeText(r.weight_lbs || "—")}</td>
 
               <td>${wrestlerLink(r.red_wrestler_guid, r.red_wrestler_name || "—")}</td>
-              <td>${safeText(r.red_team_name || "—")}</td>
+              <td>${safeText(r.red_fantasy_team_name || "—")}</td>
 
               <td>${wrestlerLink(r.green_wrestler_guid, r.green_wrestler_name || "—")}</td>
-              <td>${safeText(r.green_team_name || "—")}</td>
+              <td>${safeText(r.green_fantasy_team_name || "—")}</td>
             </tr>
           `).join("")}
         </tbody>
