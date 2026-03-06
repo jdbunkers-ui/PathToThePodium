@@ -41,3 +41,16 @@
   const el = document.getElementById("site-nav");
   if (el) el.innerHTML = `<nav class="nav">${links}</nav>`;
 })();
+
+// -------------------------------------------------------------
+// Footer Renderer
+// -------------------------------------------------------------
+const footer = document.getElementById("site-footer");
+
+if (footer) {
+  footer.innerHTML = `
+    <div class="footer">
+      Developed by White Blaze Analytics LLC
+    </div>
+  `;
+}
