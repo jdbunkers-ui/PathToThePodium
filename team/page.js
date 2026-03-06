@@ -52,7 +52,7 @@ function renderTeamRoster(rows) {
     return;
   }
 
-  const teamName = rows[0].fantasy_team_name || "Fantasy Team";
+  const teamName = rows[0].team_name || "Fantasy Team";
 
   root.innerHTML = `
     <h2>${safeText(teamName)}</h2>
@@ -80,7 +80,7 @@ function renderTeamRoster(rows) {
               </td>
 
               <td>${safeText(r.college_team_name || "—")}</td>
-              <td style="text-align:right;"><strong>${fmtPoints(r.total_points)}</strong></td>
+              <td style="text-align:right;"><strong>${fmtPoints(r.wrestler_total_points)}</strong></td>
             </tr>
           `).join("")}
         </tbody>
