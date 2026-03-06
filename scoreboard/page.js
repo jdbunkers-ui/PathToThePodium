@@ -8,50 +8,37 @@
 //   - utils.js: requireParam(), getQueryParam()
 //   - api.js: queryView()
 
-
 (async function initScoreboardPage() {
   const root = document.getElementById("page-root");
   if (!root) return;
 
-  // Optional: show a loading state immediately (helps perceived performance)
   root.innerHTML = `<p>Loading scoreboard…</p>`;
 
   try {
-    // URL contract:
-    //   /scoreboard/?league=<fantasy_league_guid>
     const leagueGuid = requireParam("league");
-
-    // Optional query param we may support later:
-    //   /scoreboard/?league=...&session=1
     const session = getQueryParam("session");
 
-    // Filters passed into queryView() -> .eq() clauses
     const filters = { fantasy_league_guid: leagueGuid };
 
-    // If your view supports session filtering, enable this and set the correct column name.
-    // Common options might be: session_nbr, session, session_number, session_name.
-    // if (session) filters.session_nbr = Number(session);
+    // if (session) filters.session = Number(session);
 
-    // Query the view (sort teams by total points descending)
     const rows = await queryView(
       "v_league_scoreboard",
       filters,
       { column: "total_points", ascending: false }
     );
 
-    renderScoreboard(rows);
+    renderScoreboard(rows, leagueGuid);
 
   } catch (err) {
     console.error("Scoreboard page failed to load:", err);
-    // requireParam() already writes a user-facing error to #page-root when missing.
-    // If it failed for another reason, show a generic message.
     if (root.innerHTML.trim() === "") {
       root.innerHTML = `<p>Unable to load scoreboard.</p>`;
     }
   }
 })();
 
-function renderScoreboard(rows) {
+function renderScoreboard(rows, leagueGuid) {
   const root = document.getElementById("page-root");
   if (!root) return;
 
@@ -60,11 +47,6 @@ function renderScoreboard(rows) {
     return;
   }
 
-  // NOTE ON COLUMN NAMES:
-  // If your view uses different column names, adjust the mapping below.
-  // Examples that sometimes vary:
-  //   - team name: fantasy_team_name vs team_name
-  //   - points: consolation_points/championship_points/bonus_points/total_points
   root.innerHTML = `
     <h2>League Scoreboard</h2>
 
@@ -84,7 +66,7 @@ function renderScoreboard(rows) {
           ${rows.map(r => `
             <tr>
               <td>
-                <a href="../team/?team=${r.fantasy_team_guid}&league=${getQueryParam("league")}">
+                <a href="../team/?team=${encodeURIComponent(r.fantasy_team_guid)}&league=${encodeURIComponent(leagueGuid)}">
                   ${safeText(r.fantasy_team_name || r.team_name || "—")}
                 </a>
               </td>
@@ -100,11 +82,6 @@ function renderScoreboard(rows) {
   `;
 }
 
-/**
- * Format a numeric value as points.
- * - Defaults to "0.0"
- * - Keeps non-numeric strings readable (debug-friendly)
- */
 function fmtPoints(value) {
   if (value === null || value === undefined || value === "") return "0.0";
   const n = Number(value);
@@ -112,10 +89,6 @@ function fmtPoints(value) {
   return n.toFixed(1);
 }
 
-/**
- * Basic XSS safety: render as text, not HTML.
- * (Prevents view data from injecting markup.)
- */
 function safeText(value) {
   const div = document.createElement("div");
   div.textContent = value ?? "";
