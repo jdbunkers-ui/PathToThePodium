@@ -4,7 +4,7 @@
   const league = params.get("league");
 
   // Detect repo base path for GitHub Pages project sites.
-  // Example pathname: /PathtothePodium/index.html -> basePath = /PathtothePodium
+  // Example pathname: /PathToThePodium/index.html -> basePath = /PathToThePodium
   const parts = window.location.pathname.split("/").filter(Boolean);
   const basePath = parts.length ? `/${parts[0]}` : "";
 
@@ -18,6 +18,7 @@
   ];
 
   const leagueNav = [
+    { label: "HOME", href: "index.html" },
     { label: "SCOREBOARD", href: "scoreboard/index.html" },
     { label: "STATS", href: "team_stats/index.html" },
     { label: "LEADERBOARD", href: "leaders/index.html" },
@@ -27,12 +28,36 @@
   const navItems = league ? leagueNav : globalNav;
 
   const links = navItems.map(item => {
-    // Build as: /<basePath>/<relativeHref>
     const url = new URL(`${basePath}/${item.href}`, window.location.origin);
-    if (league) url.searchParams.set("league", league);
+
+    // Preserve league context when navigating within league pages
+    if (league && item.label !== "HOME") {
+      url.searchParams.set("league", league);
+    }
+
     return `<a class="nav-link" href="${url.pathname}${url.search}">${item.label}</a>`;
   }).join("");
 
   const el = document.getElementById("site-nav");
-  if (el) el.innerHTML = `<nav class="nav">${links}</nav>`;
+  if (el) {
+    el.innerHTML = `
+      <div class="site-header-inner">
+        <nav class="nav">${links}</nav>
+        <img src="${basePath}/images/podium.png" alt="Champion Wrestler" class="header-podium">
+      </div>
+    `;
+  }
 })();
+
+// -------------------------------------------------------------
+// Footer Renderer
+// -------------------------------------------------------------
+const footer = document.getElementById("site-footer");
+
+if (footer) {
+  footer.innerHTML = `
+    <div class="footer">
+      Developed by White Blaze Analytics LLC
+    </div>
+  `;
+}

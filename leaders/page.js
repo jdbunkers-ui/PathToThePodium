@@ -9,7 +9,7 @@
 //   • Link wrestler names to /wrestler/?wrestler=<wrestler_guid>
 //
 // Dependencies (classic scripts; globals must exist):
-//   • utils.js: requireParam(), getQueryParam()
+//   • utils.js: requireParam(), getQueryParam(), buildLeagueLink()
 //   • api.js: queryView()
 // -------------------------------------------------------------
 
@@ -20,22 +20,15 @@
   root.innerHTML = `<p>Loading leaders…</p>`;
 
   try {
-    // League context is required for this page
     const leagueGuid = requireParam("league");
-
-    // Optional: add later if/when your view supports it
-    // Example URL: /leaders/?league=...&weight=141
     const weight = getQueryParam("weight");
 
     const filters = {
       fantasy_league_guid: leagueGuid
     };
 
-    // If your view includes a weight column, uncomment + adjust column name:
     // if (weight) filters.weight_lbs = Number(weight);
-    // or: filters.weight_class = String(weight);
 
-    // Sort by total points descending (adjust column name if needed)
     const rows = await queryView(
       "v_league_wrestler_leaders",
       filters,
@@ -81,7 +74,7 @@ function renderLeaders(rows) {
               <td>${i + 1}</td>
 
               <td>
-                <a href="../wrestler/?wrestler=${encodeURIComponent(r.wrestler_guid)}">
+                <a href="${buildLeagueLink(`../wrestler/?wrestler=${encodeURIComponent(r.wrestler_guid)}`)}">
                   ${safeText(r.wrestler_name || r.display_name || "—")}
                 </a>
               </td>
