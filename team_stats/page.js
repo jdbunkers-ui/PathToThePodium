@@ -1,79 +1,84 @@
 // /team_stats/page.js
 // -------------------------------------------------------------
-// Fantasy Team Stats Page Controller
+// Fantasy Team Roster Page Controller
 // -------------------------------------------------------------
 // Purpose:
-//   • Query Supabase view: v_league_team_stats
-//   • Filter by league via URL param: ?league=<fantasy_league_guid>
-//   • Render team statistics leaderboard
+//   • Query Supabase view: v_team_roster_points
+//   • Filter by team via URL param: ?team=<fantasy_team_guid>
+//   • Render roster + points into #page-root
+//   • Link wrestler names to /wrestler/?wrestler=<wrestler_guid>
 //
 // Dependencies (classic scripts):
 //   • utils.js: requireParam()
 //   • api.js: queryView()
 // -------------------------------------------------------------
 
-(async function initTeamStatsPage() {
+(async function initTeamPage() {
 
   const root = document.getElementById("page-root");
   if (!root) return;
 
-  root.innerHTML = `<p>Loading team stats…</p>`;
+  root.innerHTML = `<p>Loading team roster…</p>`;
 
   try {
 
-    const leagueGuid = requireParam("league");
+    const teamGuid = requireParam("team");
 
     const rows = await queryView(
-      "v_league_team_stats",
-      { fantasy_league_guid: leagueGuid },
-      { column: "total_points", ascending: false }
+      "v_team_roster_points",
+      { fantasy_team_guid: teamGuid },
+      { column: "weight_lbs", ascending: true }
     );
 
-    renderTeamStats(rows);
+    renderTeamRoster(rows);
 
   } catch (err) {
 
-    console.error("Team stats failed to load:", err);
-    root.innerHTML = `<p>Unable to load team statistics.</p>`;
+    console.error("Team roster failed to load:", err);
+    root.innerHTML = `<p>Unable to load team roster.</p>`;
 
   }
 
 })();
 
 
-function renderTeamStats(rows) {
+function renderTeamRoster(rows) {
 
   const root = document.getElementById("page-root");
   if (!root) return;
 
   if (!rows || rows.length === 0) {
-    root.innerHTML = `<p>No team statistics found.</p>`;
+    root.innerHTML = `<p>No roster found.</p>`;
     return;
   }
 
+  const teamName = rows[0].team_name || "Fantasy Team";
+
   root.innerHTML = `
-    <h2>League Team Statistics</h2>
+    <h2>${safeText(teamName)}</h2>
 
     <div class="table-wrap">
       <table class="table">
         <thead>
           <tr>
-            <th>Team</th>
-            <th style="text-align:right;">Wins</th>
-            <th style="text-align:right;">Losses</th>
-            <th style="text-align:right;">Bonus</th>
-            <th style="text-align:right;">Total Points</th>
+            <th>Weight</th>
+            <th>Wrestler</th>
+            <th style="text-align:right;">Points</th>
           </tr>
         </thead>
 
         <tbody>
           ${rows.map(r => `
             <tr>
-              <td>${safeText(r.fantasy_team_name || r.team_name || "—")}</td>
-              <td style="text-align:right;">${fmt(r.wins)}</td>
-              <td style="text-align:right;">${fmt(r.losses)}</td>
-              <td style="text-align:right;">${fmt(r.bonus_points)}</td>
-              <td style="text-align:right;"><strong>${fmt(r.total_points)}</strong></td>
+              <td>${safeText(r.weight_lbs || "—")}</td>
+
+              <td>
+                <a href="../wrestler/?wrestler=${encodeURIComponent(r.wrestler_guid)}">
+                  ${safeText(r.wrestler_name || "—")}
+                </a>
+              </td>
+
+              <td style="text-align:right;"><strong>${fmtPoints(r.wrestler_total_points)}</strong></td>
             </tr>
           `).join("")}
         </tbody>
@@ -87,9 +92,11 @@ function renderTeamStats(rows) {
    Helpers
 ------------------------------------------------------------- */
 
-function fmt(value) {
-  if (value === null || value === undefined) return "0";
-  return value;
+function fmtPoints(value) {
+  if (value === null || value === undefined) return "0.0";
+  const n = Number(value);
+  if (Number.isNaN(n)) return String(value);
+  return n.toFixed(1);
 }
 
 function safeText(value) {
