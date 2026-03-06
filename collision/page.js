@@ -9,7 +9,7 @@
 //   • Link red/green wrestlers to /wrestler/?wrestler=<wrestler_guid>
 //
 // Dependencies (classic scripts):
-//   • utils.js: requireParam()
+//   • utils.js: requireParam(), buildLeagueLink()
 //   • api.js: queryView()
 // -------------------------------------------------------------
 
@@ -94,7 +94,7 @@ function wrestlerLink(wrestlerGuid, label) {
   if (!wrestlerGuid) return safeText(label);
 
   return `
-    <a href="../wrestler/?wrestler=${encodeURIComponent(wrestlerGuid)}">
+    <a href="${buildLeagueLink(`../wrestler/?wrestler=${encodeURIComponent(wrestlerGuid)}`)}">
       ${safeText(label)}
     </a>
   `;
