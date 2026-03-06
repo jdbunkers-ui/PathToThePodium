@@ -7,7 +7,7 @@
 //   • Filter by wrestler via URL param: ?wrestler=<wrestler_guid>
 //   • Render match history table
 //   • Add "Back to Scoreboard" link when ?league=<fantasy_league_guid> is present
-//   • Make opponent clickable when opponent_guid (or opponent_wrestler_guid) exists
+//   • Make opponent clickable when opponent_wrestler_guid exists
 //
 // Dependencies (classic scripts):
 //   • utils.js: requireParam(), getQueryParam()
@@ -27,7 +27,8 @@
 
     const rows = await queryView(
       "v_wrestler_match_history",
-      { wrestler_guid: wrestlerGuid }
+      { wrestler_guid: wrestlerGuid },
+      { column: "match_number", ascending: true }
     );
 
     renderWrestlerHistory(rows);
@@ -54,7 +55,6 @@ function renderWrestlerHistory(rows) {
 
   const wrestlerName = rows[0].wrestler_name || "Wrestler";
 
-  // If league context exists, provide an easy way back to the scoreboard
   const league = getQueryParam("league");
   const backLink = league
     ? `<p><a href="../scoreboard/?league=${encodeURIComponent(league)}">← Back to Scoreboard</a></p>`
@@ -70,28 +70,32 @@ function renderWrestlerHistory(rows) {
           <tr>
             <th>Round</th>
             <th>Opponent</th>
-            <th>School</th>
             <th>Result</th>
-            <th style="text-align:right;">Points</th>
+            <th style="text-align:right;">Red</th>
+            <th style="text-align:right;">Green</th>
+            <th>Win Type</th>
+            <th>End Type</th>
           </tr>
         </thead>
 
         <tbody>
           ${rows.map(r => `
             <tr>
-              <td>${safeText(r.round_name || "—")}</td>
+              <td>${safeText(r.round_description || "—")}</td>
 
               <td>
                 ${wrestlerLink(
-                  r.opponent_guid || r.opponent_wrestler_guid,
-                  r.opponent_name || "—",
+                  r.opponent_wrestler_guid,
+                  r.opponent_wrestler_name || "—",
                   league
                 )}
               </td>
 
-              <td>${safeText(r.opponent_school || "—")}</td>
               <td>${safeText(r.result || "—")}</td>
-              <td style="text-align:right;">${fmt(r.points)}</td>
+              <td style="text-align:right;">${fmtScore(r.red_score)}</td>
+              <td style="text-align:right;">${fmtScore(r.green_score)}</td>
+              <td>${safeText(r.win_type || "—")}</td>
+              <td>${safeText(r.end_type || "—")}</td>
             </tr>
           `).join("")}
         </tbody>
@@ -106,21 +110,19 @@ function renderWrestlerHistory(rows) {
 ------------------------------------------------------------- */
 
 function wrestlerLink(wrestlerGuid, label, league) {
-  // If the view doesn't provide an opponent guid, render plain text
   if (!wrestlerGuid) return safeText(label);
 
   const url = new URL("../wrestler/", window.location.href);
   url.searchParams.set("wrestler", wrestlerGuid);
 
-  // Preserve league context if present so "Back to Scoreboard" keeps working
   if (league) url.searchParams.set("league", league);
 
   return `<a href="${url.pathname}${url.search}">${safeText(label)}</a>`;
 }
 
-function fmt(value) {
-  if (value === null || value === undefined) return "0";
-  return value;
+function fmtScore(value) {
+  if (value === null || value === undefined || value === "") return "—";
+  return String(value);
 }
 
 function safeText(value) {
