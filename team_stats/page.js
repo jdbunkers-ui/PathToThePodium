@@ -1,84 +1,87 @@
 // /team_stats/page.js
 // -------------------------------------------------------------
-// Fantasy Team Roster Page Controller
+// League Team Stats Page Controller
 // -------------------------------------------------------------
 // Purpose:
-//   • Query Supabase view: v_team_roster_points
-//   • Filter by team via URL param: ?team=<fantasy_team_guid>
-//   • Render roster + points into #page-root
-//   • Link wrestler names to /wrestler/?wrestler=<wrestler_guid>
+//   • Query Supabase view: v_league_team_stats
+//   • Filter by league via URL param: ?league=<fantasy_league_guid>
+//   • Render team-level league stats into #page-root
 //
 // Dependencies (classic scripts):
 //   • utils.js: requireParam()
 //   • api.js: queryView()
 // -------------------------------------------------------------
 
-(async function initTeamPage() {
+(async function initTeamStatsPage() {
 
   const root = document.getElementById("page-root");
   if (!root) return;
 
-  root.innerHTML = `<p>Loading team roster…</p>`;
+  root.innerHTML = `<p>Loading team stats…</p>`;
 
   try {
 
-    const teamGuid = requireParam("team");
+    const leagueGuid = requireParam("league");
 
     const rows = await queryView(
-      "v_team_roster_points",
-      { fantasy_team_guid: teamGuid },
-      { column: "weight_lbs", ascending: true }
+      "v_league_team_stats",
+      { fantasy_league_guid: leagueGuid },
+      { column: "total_individual_wins", ascending: false }
     );
 
-    renderTeamRoster(rows);
+    renderTeamStats(rows);
 
   } catch (err) {
 
-    console.error("Team roster failed to load:", err);
-    root.innerHTML = `<p>Unable to load team roster.</p>`;
+    console.error("Team stats failed to load:", err);
+    root.innerHTML = `<p>Unable to load team stats.</p>`;
 
   }
 
 })();
 
 
-function renderTeamRoster(rows) {
+function renderTeamStats(rows) {
 
   const root = document.getElementById("page-root");
   if (!root) return;
 
   if (!rows || rows.length === 0) {
-    root.innerHTML = `<p>No roster found.</p>`;
+    root.innerHTML = `<p>No team stats found for this league.</p>`;
     return;
   }
 
-  const teamName = rows[0].team_name || "Fantasy Team";
-
   root.innerHTML = `
-    <h2>${safeText(teamName)}</h2>
+    <h2>League Team Stats</h2>
 
     <div class="table-wrap">
       <table class="table">
         <thead>
           <tr>
-            <th>Weight</th>
-            <th>Wrestler</th>
-            <th style="text-align:right;">Points</th>
+            <th>Team</th>
+            <th style="text-align:right;">Matches</th>
+            <th style="text-align:right;">Wins</th>
+            <th style="text-align:right;">Pins</th>
+            <th style="text-align:right;">Alive</th>
+            <th style="text-align:right;">Champ Alive</th>
+            <th style="text-align:right;">Upsets</th>
           </tr>
         </thead>
 
         <tbody>
           ${rows.map(r => `
             <tr>
-              <td>${safeText(r.weight_lbs || "—")}</td>
-
               <td>
-                <a href="../wrestler/?wrestler=${encodeURIComponent(r.wrestler_guid)}">
-                  ${safeText(r.wrestler_name || "—")}
+                <a href="../team/?team=${encodeURIComponent(r.fantasy_team_guid)}&league=${encodeURIComponent(requireParam("league"))}">
+                  ${safeText(r.team_name || "—")}
                 </a>
               </td>
-
-              <td style="text-align:right;"><strong>${fmtPoints(r.wrestler_total_points)}</strong></td>
+              <td style="text-align:right;">${fmtInt(r.total_matches)}</td>
+              <td style="text-align:right;">${fmtInt(r.total_individual_wins)}</td>
+              <td style="text-align:right;">${fmtInt(r.total_pins)}</td>
+              <td style="text-align:right;">${fmtInt(r.still_in_the_tournament)}</td>
+              <td style="text-align:right;">${fmtInt(r.still_in_the_championship_bracket)}</td>
+              <td style="text-align:right;">${fmtInt(r.upsets)}</td>
             </tr>
           `).join("")}
         </tbody>
@@ -92,11 +95,11 @@ function renderTeamRoster(rows) {
    Helpers
 ------------------------------------------------------------- */
 
-function fmtPoints(value) {
-  if (value === null || value === undefined) return "0.0";
+function fmtInt(value) {
+  if (value === null || value === undefined || value === "") return "0";
   const n = Number(value);
   if (Number.isNaN(n)) return String(value);
-  return n.toFixed(1);
+  return String(Math.trunc(n));
 }
 
 function safeText(value) {
