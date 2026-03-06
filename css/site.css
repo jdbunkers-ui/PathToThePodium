@@ -205,6 +205,35 @@ h1, h2, h3 {
   background: rgba(255,255,255,0.03);
 }
 
+.site-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  background: var(--bg-soft);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav {
+  display: flex;
+  gap: 20px;
+  padding: 16px 0;
+  background: transparent;
+  border-bottom: none;
+}
+
+.header-podium {
+  height: 40px;
+  width: auto;
+  display: block;
+  flex-shrink: 0;
+  margin-left: 16px;
+}
+.header-podium {
+  height: 40px;
+  width: auto;
+}
+
 /* -------------------------------------------------------------
    Footer
 ------------------------------------------------------------- */
