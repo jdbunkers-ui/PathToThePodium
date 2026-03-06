@@ -205,6 +205,17 @@ h1, h2, h3 {
   background: rgba(255,255,255,0.03);
 }
 
+.site-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-podium {
+  height: 40px;
+  width: auto;
+}
+
 /* -------------------------------------------------------------
    Footer
 ------------------------------------------------------------- */
