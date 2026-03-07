@@ -1,10 +1,10 @@
 // /js/site-chrome.js
 (function () {
+
   const params = new URLSearchParams(window.location.search);
   const league = params.get("league");
 
-  // Detect repo base path for GitHub Pages project sites.
-  // Example pathname: /PathToThePodium/index.html -> basePath = /PathToThePodium
+  // Detect repo base path for GitHub Pages project sites
   const parts = window.location.pathname.split("/").filter(Boolean);
   const basePath = parts.length ? `/${parts[0]}` : "";
 
@@ -28,6 +28,7 @@
   const navItems = league ? leagueNav : globalNav;
 
   const links = navItems.map(item => {
+
     const url = new URL(`${basePath}/${item.href}`, window.location.origin);
 
     // Preserve league context when navigating within league pages
@@ -36,28 +37,63 @@
     }
 
     return `<a class="nav-link" href="${url.pathname}${url.search}">${item.label}</a>`;
+
   }).join("");
 
-  const el = document.getElementById("site-nav");
-  if (el) {
-    el.innerHTML = `
-      <div class="site-header-inner">
-        <nav class="nav">${links}</nav>
-        <img src="${basePath}/images/podium.png" alt="Champion Wrestler" class="header-podium">
-      </div>
+  const navRoot = document.getElementById("site-nav");
+
+  if (navRoot) {
+    navRoot.innerHTML = `
+      <header class="site-header">
+        <div class="site-header-inner">
+
+          <nav class="nav" aria-label="Primary navigation">
+            ${links}
+          </nav>
+
+          <div class="site-brand">
+            <a href="${basePath}/index.html" class="site-brand-link">
+              <img
+                src="${basePath}/images/podium.png"
+                alt="Champion Wrestler"
+                class="header-podium"
+              >
+            </a>
+          </div>
+
+        </div>
+      </header>
     `;
   }
+
+  // -------------------------------------------------------------
+  // Active Navigation Highlighting
+  // -------------------------------------------------------------
+
+  const currentPath = window.location.pathname;
+
+  document.querySelectorAll(".nav-link").forEach(link => {
+
+    const linkPath = new URL(link.href).pathname;
+
+    if (currentPath.endsWith(linkPath)) {
+      link.classList.add("active");
+    }
+
+  });
+
+  // -------------------------------------------------------------
+  // Footer Renderer
+  // -------------------------------------------------------------
+
+  const footerRoot = document.getElementById("site-footer");
+
+  if (footerRoot) {
+    footerRoot.innerHTML = `
+      <footer class="footer" aria-label="Site footer">
+        Developed by White Blaze Analytics LLC
+      </footer>
+    `;
+  }
+
 })();
-
-// -------------------------------------------------------------
-// Footer Renderer
-// -------------------------------------------------------------
-const footer = document.getElementById("site-footer");
-
-if (footer) {
-  footer.innerHTML = `
-    <div class="footer">
-      Developed by White Blaze Analytics LLC
-    </div>
-  `;
-}

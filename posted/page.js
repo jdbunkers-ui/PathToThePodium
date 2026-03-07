@@ -10,18 +10,29 @@
 //
 // Dependencies (classic scripts):
 //   • api.js: queryView()
-//   • utils.js: getQueryParam()
+//   • utils.js: getQueryParam(), buildRepoLink()
 // -------------------------------------------------------------
 
 (async function initPostedMatchesPage() {
-
   const root = document.getElementById("page-root");
   if (!root) return;
 
-  root.innerHTML = `<p>Loading posted matches…</p>`;
+  root.innerHTML = `
+    <div class="page-header">
+      <h2 class="page-title">Posted Tournament Matches</h2>
+      <p class="page-subtitle">Recently posted match results for the current tournament year.</p>
+    </div>
+
+    <div class="panel">
+      <div class="skeleton table-row"></div>
+      <div class="skeleton table-row"></div>
+      <div class="skeleton table-row"></div>
+      <div class="skeleton table-row"></div>
+      <div class="skeleton table-row"></div>
+    </div>
+  `;
 
   try {
-
     // Optional filters
     const weight = getQueryParam("weight");
     const session = getQueryParam("session");
@@ -38,76 +49,83 @@
     );
 
     renderPostedMatches(rows);
-
   } catch (err) {
-
     console.error("Posted matches failed to load:", err);
-    root.innerHTML = `<p>Unable to load posted matches.</p>`;
+    root.innerHTML = `
+      <div class="page-header">
+        <h2 class="page-title">Posted Tournament Matches</h2>
+        <p class="page-subtitle">Recently posted match results for the current tournament year.</p>
+      </div>
 
+      <div class="panel">
+        <p>Unable to load posted matches.</p>
+      </div>
+    `;
   }
-
 })();
 
-
 function renderPostedMatches(rows) {
-
   const root = document.getElementById("page-root");
   if (!root) return;
 
   if (!rows || rows.length === 0) {
-    root.innerHTML = `<p>No matches have been posted yet.</p>`;
+    root.innerHTML = `
+      <div class="page-header">
+        <h2 class="page-title">Posted Tournament Matches</h2>
+        <p class="page-subtitle">Recently posted match results for the current tournament year.</p>
+      </div>
+
+      <div class="panel">
+        <p>No matches have been posted yet.</p>
+      </div>
+    `;
     return;
   }
 
   root.innerHTML = `
-    <h2>Posted Tournament Matches</h2>
+    <div class="page-header">
+      <h2 class="page-title">Posted Tournament Matches</h2>
+      <p class="page-subtitle">Recently posted match results for the current tournament year.</p>
+    </div>
 
-    <div class="table-wrap">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Weight</th>
-            <th>Red Wrestler</th>
-            <th>Green Wrestler</th>
-            <th>Winner</th>
-            <th>Result</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          ${rows.map(r => `
+    <div class="panel">
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
             <tr>
-              <td>${safeText(r.weight_class || r.weight_lbs || "—")}</td>
-
-              <td>${wrestlerLink(r.red_wrestler_guid, r.red_wrestler_name || "—")}</td>
-
-              <td>${wrestlerLink(r.green_wrestler_guid, r.green_wrestler_name || "—")}</td>
-
-              <td>${wrestlerLink(r.winner_guid || r.winner_wrestler_guid, r.winner_name || "—")}</td>
-
-              <td>${safeText(r.result || "—")}</td>
+              <th>Weight</th>
+              <th>Red Wrestler</th>
+              <th>Green Wrestler</th>
+              <th>Winner</th>
+              <th>Result</th>
             </tr>
-          `).join("")}
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody>
+            ${rows.map(r => `
+              <tr>
+                <td>${safeText(r.weight_class || r.weight_lbs || "—")}</td>
+                <td>${wrestlerLink(r.red_wrestler_guid, r.red_wrestler_name || "—")}</td>
+                <td>${wrestlerLink(r.green_wrestler_guid, r.green_wrestler_name || "—")}</td>
+                <td>${wrestlerLink(r.winner_guid || r.winner_wrestler_guid, r.winner_name || "—")}</td>
+                <td>${safeText(r.result || "—")}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      </div>
     </div>
   `;
 }
-
 
 /* -------------------------------------------------------------
    Helpers
 ------------------------------------------------------------- */
 
 function wrestlerLink(wrestlerGuid, label) {
-  // If we don't have a guid, render plain text (no broken links)
   if (!wrestlerGuid) return safeText(label);
 
-  return `
-    <a href="../wrestler/?wrestler=${encodeURIComponent(wrestlerGuid)}">
-      ${safeText(label)}
-    </a>
-  `;
+  return `<a href="${buildRepoLink(`wrestler/index.html?wrestler=${encodeURIComponent(wrestlerGuid)}`)}">${safeText(label)}</a>`;
 }
 
 function safeText(value) {

@@ -8,19 +8,30 @@
 //   • Render team-level league stats into #page-root
 //
 // Dependencies (classic scripts):
-//   • utils.js: requireParam()
+//   • utils.js: requireParam(), buildLeagueLink()
 //   • api.js: queryView()
 // -------------------------------------------------------------
 
 (async function initTeamStatsPage() {
-
   const root = document.getElementById("page-root");
   if (!root) return;
 
-  root.innerHTML = `<p>Loading team stats…</p>`;
+  root.innerHTML = `
+    <div class="page-header">
+      <h2 class="page-title">League Team Stats</h2>
+      <p class="page-subtitle">Team-level performance metrics for the selected fantasy league.</p>
+    </div>
+
+    <div class="panel">
+      <div class="skeleton table-row"></div>
+      <div class="skeleton table-row"></div>
+      <div class="skeleton table-row"></div>
+      <div class="skeleton table-row"></div>
+      <div class="skeleton table-row"></div>
+    </div>
+  `;
 
   try {
-
     const leagueGuid = requireParam("league");
 
     const rows = await queryView(
@@ -30,66 +41,82 @@
     );
 
     renderTeamStats(rows);
-
   } catch (err) {
-
     console.error("Team stats failed to load:", err);
-    root.innerHTML = `<p>Unable to load team stats.</p>`;
+    root.innerHTML = `
+      <div class="page-header">
+        <h2 class="page-title">League Team Stats</h2>
+        <p class="page-subtitle">Team-level performance metrics for the selected fantasy league.</p>
+      </div>
 
+      <div class="panel">
+        <p>Unable to load team stats.</p>
+      </div>
+    `;
   }
-
 })();
 
-
 function renderTeamStats(rows) {
-
   const root = document.getElementById("page-root");
   if (!root) return;
 
   if (!rows || rows.length === 0) {
-    root.innerHTML = `<p>No team stats found for this league.</p>`;
+    root.innerHTML = `
+      <div class="page-header">
+        <h2 class="page-title">League Team Stats</h2>
+        <p class="page-subtitle">Team-level performance metrics for the selected fantasy league.</p>
+      </div>
+
+      <div class="panel">
+        <p>No team stats found for this league.</p>
+      </div>
+    `;
     return;
   }
 
   root.innerHTML = `
-    <h2>League Team Stats</h2>
+    <div class="page-header">
+      <h2 class="page-title">League Team Stats</h2>
+      <p class="page-subtitle">Team-level performance metrics for the selected fantasy league.</p>
+    </div>
 
-    <div class="table-wrap">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Team</th>
-            <th style="text-align:right;">Matches</th>
-            <th style="text-align:right;">Wins</th>
-            <th style="text-align:right;">Pins</th>
-            <th style="text-align:right;">Alive</th>
-            <th style="text-align:right;">Champ Alive</th>
-            <th style="text-align:right;">Upsets</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          ${rows.map(r => `
+    <div class="panel">
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
             <tr>
-              <td>
-                <a href="../team/?team=${encodeURIComponent(r.fantasy_team_guid)}&league=${encodeURIComponent(requireParam("league"))}">
-                  ${safeText(r.team_name || "—")}
-                </a>
-              </td>
-              <td style="text-align:right;">${fmtInt(r.total_matches)}</td>
-              <td style="text-align:right;">${fmtInt(r.total_individual_wins)}</td>
-              <td style="text-align:right;">${fmtInt(r.total_pins)}</td>
-              <td style="text-align:right;">${fmtInt(r.still_in_the_tournament)}</td>
-              <td style="text-align:right;">${fmtInt(r.still_in_the_championship_bracket)}</td>
-              <td style="text-align:right;">${fmtInt(r.upsets)}</td>
+              <th>Team</th>
+              <th style="text-align:right;">Matches</th>
+              <th style="text-align:right;">Wins</th>
+              <th style="text-align:right;">Pins</th>
+              <th style="text-align:right;">Alive</th>
+              <th style="text-align:right;">Champ Alive</th>
+              <th style="text-align:right;">Upsets</th>
             </tr>
-          `).join("")}
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody>
+            ${rows.map(r => `
+              <tr>
+                <td>
+                  <a href="${buildLeagueLink(`team/index.html?team=${encodeURIComponent(r.fantasy_team_guid)}`)}">
+                    ${safeText(r.team_name || "—")}
+                  </a>
+                </td>
+                <td style="text-align:right;">${fmtInt(r.total_matches)}</td>
+                <td style="text-align:right;">${fmtInt(r.total_individual_wins)}</td>
+                <td style="text-align:right;">${fmtInt(r.total_pins)}</td>
+                <td style="text-align:right;">${fmtInt(r.still_in_the_tournament)}</td>
+                <td style="text-align:right;">${fmtInt(r.still_in_the_championship_bracket)}</td>
+                <td style="text-align:right;">${fmtInt(r.upsets)}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      </div>
     </div>
   `;
 }
-
 
 /* -------------------------------------------------------------
    Helpers
