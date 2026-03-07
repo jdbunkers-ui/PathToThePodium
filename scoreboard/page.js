@@ -5,7 +5,7 @@
 //   - Render a simple table into #page-root
 //
 // Dependencies (classic scripts; globals must exist):
-//   - utils.js: requireParam(), getQueryParam()
+//   - utils.js: requireParam(), getQueryParam(), buildLeagueLink()
 //   - api.js: queryView()
 
 (async function initScoreboardPage() {
@@ -98,7 +98,7 @@ function renderScoreboard(rows, leagueGuid) {
             ${rows.map(r => `
               <tr>
                 <td>
-                  <a href="../team/?team=${encodeURIComponent(r.fantasy_team_guid)}&league=${encodeURIComponent(leagueGuid)}">
+                  <a href="${buildLeagueLink(`team/index.html?team=${encodeURIComponent(r.fantasy_team_guid)}`)}">
                     ${safeText(r.fantasy_team_name || r.team_name || "—")}
                   </a>
                 </td>
