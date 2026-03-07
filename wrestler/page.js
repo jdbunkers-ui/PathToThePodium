@@ -15,14 +15,12 @@
 // -------------------------------------------------------------
 
 (async function initWrestlerPage() {
-
   const root = document.getElementById("page-root");
   if (!root) return;
 
   root.innerHTML = `<p>Loading wrestler history…</p>`;
 
   try {
-
     const wrestlerGuid = requireParam("wrestler");
 
     const rows = await queryView(
@@ -32,19 +30,13 @@
     );
 
     renderWrestlerHistory(rows);
-
   } catch (err) {
-
     console.error("Wrestler page failed to load:", err);
     root.innerHTML = `<p>Unable to load wrestler history.</p>`;
-
   }
-
 })();
 
-
 function renderWrestlerHistory(rows) {
-
   const root = document.getElementById("page-root");
   if (!root) return;
 
@@ -57,7 +49,7 @@ function renderWrestlerHistory(rows) {
 
   const league = getQueryParam("league");
   const backLink = league
-    ? `<p><a href="../scoreboard/?league=${encodeURIComponent(league)}">← Back to Scoreboard</a></p>`
+    ? `<p><a href="${buildRepoLink("scoreboard/index.html", { league })}">← Back to Scoreboard</a></p>`
     : "";
 
   root.innerHTML = `
@@ -82,7 +74,6 @@ function renderWrestlerHistory(rows) {
           ${rows.map(r => `
             <tr>
               <td>${safeText(r.round_description || "—")}</td>
-
               <td>
                 ${wrestlerLink(
                   r.opponent_wrestler_guid,
@@ -90,7 +81,6 @@ function renderWrestlerHistory(rows) {
                   league
                 )}
               </td>
-
               <td>${safeText(r.result || "—")}</td>
               <td style="text-align:right;">${fmtScore(r.red_score)}</td>
               <td style="text-align:right;">${fmtScore(r.green_score)}</td>
@@ -104,20 +94,35 @@ function renderWrestlerHistory(rows) {
   `;
 }
 
-
 /* -------------------------------------------------------------
    Helpers
 ------------------------------------------------------------- */
 
+function getBasePath() {
+  const parts = window.location.pathname.split("/").filter(Boolean);
+  return parts.length ? `/${parts[0]}` : "";
+}
+
+function buildRepoLink(relativePath, params = {}) {
+  const basePath = getBasePath();
+  const url = new URL(`${basePath}/${relativePath}`, window.location.origin);
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== null && value !== undefined && value !== "") {
+      url.searchParams.set(key, value);
+    }
+  });
+
+  return `${url.pathname}${url.search}`;
+}
+
 function wrestlerLink(wrestlerGuid, label, league) {
   if (!wrestlerGuid) return safeText(label);
 
-  const url = new URL("../wrestler/", window.location.href);
-  url.searchParams.set("wrestler", wrestlerGuid);
-
-  if (league) url.searchParams.set("league", league);
-
-  return `<a href="${url.pathname}${url.search}">${safeText(label)}</a>`;
+  return `<a href="${buildRepoLink("wrestler/index.html", {
+    wrestler: wrestlerGuid,
+    league
+  })}">${safeText(label)}</a>`;
 }
 
 function fmtScore(value) {
