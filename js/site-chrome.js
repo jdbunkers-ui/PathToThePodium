@@ -1,10 +1,10 @@
 // /js/site-chrome.js
 (function () {
+
   const params = new URLSearchParams(window.location.search);
   const league = params.get("league");
 
-  // Detect repo base path for GitHub Pages project sites.
-  // Example pathname: /PathToThePodium/index.html -> basePath = /PathToThePodium
+  // Detect repo base path for GitHub Pages project sites
   const parts = window.location.pathname.split("/").filter(Boolean);
   const basePath = parts.length ? `/${parts[0]}` : "";
 
@@ -27,18 +27,18 @@
 
   const navItems = league ? leagueNav : globalNav;
 
-  const links = navItems
-    .map((item) => {
-      const url = new URL(`${basePath}/${item.href}`, window.location.origin);
+  const links = navItems.map(item => {
 
-      // Preserve league context when navigating within league pages
-      if (league && item.label !== "HOME") {
-        url.searchParams.set("league", league);
-      }
+    const url = new URL(`${basePath}/${item.href}`, window.location.origin);
 
-      return `<a class="nav-link" href="${url.pathname}${url.search}">${item.label}</a>`;
-    })
-    .join("");
+    // Preserve league context when navigating within league pages
+    if (league && item.label !== "HOME") {
+      url.searchParams.set("league", league);
+    }
+
+    return `<a class="nav-link" href="${url.pathname}${url.search}">${item.label}</a>`;
+
+  }).join("");
 
   const navRoot = document.getElementById("site-nav");
 
@@ -46,21 +46,45 @@
     navRoot.innerHTML = `
       <header class="site-header">
         <div class="site-header-inner">
+
           <nav class="nav" aria-label="Primary navigation">
             ${links}
           </nav>
 
           <div class="site-brand">
-            <img
-              src="${basePath}/images/podium.png"
-              alt="Champion Wrestler"
-              class="header-podium"
-            >
+            <a href="${basePath}/index.html" class="site-brand-link">
+              <img
+                src="${basePath}/images/podium.png"
+                alt="Champion Wrestler"
+                class="header-podium"
+              >
+            </a>
           </div>
+
         </div>
       </header>
     `;
   }
+
+  // -------------------------------------------------------------
+  // Active Navigation Highlighting
+  // -------------------------------------------------------------
+
+  const currentPath = window.location.pathname;
+
+  document.querySelectorAll(".nav-link").forEach(link => {
+
+    const linkPath = new URL(link.href).pathname;
+
+    if (currentPath.endsWith(linkPath)) {
+      link.classList.add("active");
+    }
+
+  });
+
+  // -------------------------------------------------------------
+  // Footer Renderer
+  // -------------------------------------------------------------
 
   const footerRoot = document.getElementById("site-footer");
 
@@ -71,4 +95,5 @@
       </footer>
     `;
   }
+
 })();
