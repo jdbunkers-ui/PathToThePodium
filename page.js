@@ -13,7 +13,19 @@
   const root = document.getElementById("page-root");
   if (!root) return;
 
-  root.innerHTML = "<p>Loading leagues...</p>";
+  root.innerHTML = `
+    <div class="page-header">
+      <h2 class="page-title">Leagues</h2>
+      <p class="page-subtitle">Browse active fantasy leagues and jump into each scoreboard.</p>
+    </div>
+
+    <div class="panel">
+      <div class="skeleton title"></div>
+      <div class="skeleton medium"></div>
+      <div class="skeleton long"></div>
+      <div class="skeleton text short"></div>
+    </div>
+  `;
 
   try {
     const rows = await queryView(
@@ -25,7 +37,16 @@
     renderLeagueList(rows);
   } catch (err) {
     console.error("Landing page failed to load:", err);
-    root.innerHTML = "<p>Unable to load leagues.</p>";
+    root.innerHTML = `
+      <div class="page-header">
+        <h2 class="page-title">Leagues</h2>
+        <p class="page-subtitle">Browse active fantasy leagues and jump into each scoreboard.</p>
+      </div>
+
+      <div class="panel">
+        <p>Unable to load leagues.</p>
+      </div>
+    `;
   }
 })();
 
@@ -34,17 +55,33 @@ function renderLeagueList(rows) {
   if (!root) return;
 
   if (!rows || rows.length === 0) {
-    root.innerHTML = "<p>No leagues found.</p>";
+    root.innerHTML = `
+      <div class="page-header">
+        <h2 class="page-title">Leagues</h2>
+        <p class="page-subtitle">Browse active fantasy leagues and jump into each scoreboard.</p>
+      </div>
+
+      <div class="panel">
+        <p>No leagues found.</p>
+      </div>
+    `;
     return;
   }
 
-  root.innerHTML =
-    '<h2>Leagues</h2>' +
-    '<div class="card-grid">' +
-    rows.map(function (r) {
-      return renderLeagueCard(r);
-    }).join("") +
-    "</div>";
+  root.innerHTML = `
+    <div class="page-header">
+      <h2 class="page-title">Leagues</h2>
+      <p class="page-subtitle">Browse active fantasy leagues and jump into each scoreboard.</p>
+    </div>
+
+    <div class="panel">
+      <div class="card-grid">
+        ${rows.map(function (r) {
+          return renderLeagueCard(r);
+        }).join("")}
+      </div>
+    </div>
+  `;
 }
 
 function renderLeagueCard(r) {
