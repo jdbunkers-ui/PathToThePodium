@@ -14,7 +14,11 @@ function requireParam(name) {
 
     const root = document.getElementById("page-root");
     if (root) {
-      root.innerHTML = `<p>Missing required parameter: ${name}</p>`;
+      root.innerHTML = `
+        <div class="panel">
+          <p>Missing required parameter: ${name}</p>
+        </div>
+      `;
     }
 
     throw new Error(`Missing parameter ${name}`);
@@ -24,32 +28,65 @@ function requireParam(name) {
 }
 
 /*
-Helper: navigate to another page while preserving the league parameter
+Helper: detect repo base path for GitHub Pages project sites.
+Example pathname: /PathToThePodium/scoreboard/index.html
+=> basePath = /PathToThePodium
 */
-function navigateWithLeague(path) {
-  const league = getQueryParam("league");
-
-  if (!league) {
-    window.location.href = path;
-    return;
-  }
-
-  const url = new URL(path, window.location.origin);
-  url.searchParams.set("league", league);
-
-  window.location.href = url.pathname + url.search;
+function getBasePath() {
+  const parts = window.location.pathname.split("/").filter(Boolean);
+  return parts.length ? `/${parts[0]}` : "";
 }
 
 /*
-Helper: build a link that preserves league parameter
+Helper: build a repo-safe link from a relative path and optional params.
+Handles GitHub Pages project-site paths consistently.
+*/
+function buildRepoLink(relativePath, params = {}) {
+  const basePath = getBasePath();
+  const cleanPath = String(relativePath || "").replace(/^\/+/, "");
+  const url = new URL(`${basePath}/${cleanPath}`, window.location.origin);
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== null && value !== undefined && value !== "") {
+      url.searchParams.set(key, value);
+    }
+  });
+
+  return `${url.pathname}${url.search}`;
+}
+
+/*
+Helper: navigate to another page while preserving the league parameter.
+Expects a repo-relative path like:
+  "scoreboard/index.html"
+  "wrestler/index.html?wrestler=123"
+*/
+function navigateWithLeague(path) {
+  const league = getQueryParam("league");
+  const [relativePath, queryString = ""] = String(path).split("?");
+
+  const params = new URLSearchParams(queryString);
+  if (league && !params.has("league")) {
+    params.set("league", league);
+  }
+
+  const href = buildRepoLink(relativePath, Object.fromEntries(params.entries()));
+  window.location.href = href;
+}
+
+/*
+Helper: build a link that preserves league parameter.
+Expects a repo-relative path like:
+  "wrestler/index.html?wrestler=123"
 */
 function buildLeagueLink(path) {
   const league = getQueryParam("league");
+  const [relativePath, queryString = ""] = String(path).split("?");
 
-  if (!league) return path;
+  const params = new URLSearchParams(queryString);
+  if (league && !params.has("league")) {
+    params.set("league", league);
+  }
 
-  const url = new URL(path, window.location.origin);
-  url.searchParams.set("league", league);
-
-  return url.pathname + url.search;
+  return buildRepoLink(relativePath, Object.fromEntries(params.entries()));
 }
