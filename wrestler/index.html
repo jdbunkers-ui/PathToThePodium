@@ -1,71 +1,160 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
+// /wrestler/page.js
+// -------------------------------------------------------------
+// Wrestler Match History Page Controller
+// -------------------------------------------------------------
+// Purpose:
+//   • Query Supabase view: v_wrestler_match_history
+//   • Filter by wrestler via URL param: ?wrestler=<wrestler_guid>
+//   • Render match history table
+//   • Add "Back to Scoreboard" link when ?league=<fantasy_league_guid> is present
+//   • Make opponent clickable when opponent_wrestler_guid exists
+//
+// Dependencies (classic scripts):
+//   • utils.js: requireParam(), getQueryParam()
+//   • api.js: queryView()
+// -------------------------------------------------------------
 
-  <!-- Mobile-first scaling -->
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+(async function initWrestlerPage() {
+  const root = document.getElementById("page-root");
+  if (!root) return;
 
-  <title>Wrestler</title>
+  root.innerHTML = `
+    <div class="panel">
+      <div class="skeleton title"></div>
+      <div class="skeleton medium"></div>
+      <div class="skeleton long"></div>
+      <div class="skeleton table-row"></div>
+      <div class="skeleton table-row"></div>
+      <div class="skeleton table-row"></div>
+    </div>
+  `;
 
-  <!-- Global PTTP stylesheet (relative path from /wrestler/) -->
-  <link rel="stylesheet" href="../css/site.css" />
+  try {
+    const wrestlerGuid = requireParam("wrestler");
 
-  <!-- GitHub Pages repo favicon -->
-  <link rel="icon" href="/PathToThePodium/favicon.ico">
-</head>
+    const rows = await queryView(
+      "v_wrestler_match_history",
+      { wrestler_guid: wrestlerGuid },
+      { column: "match_number", ascending: true }
+    );
 
-<body>
+    renderWrestlerHistory(rows);
+  } catch (err) {
+    console.error("Wrestler page failed to load:", err);
+    root.innerHTML = `
+      <div class="panel">
+        <p>Unable to load wrestler history.</p>
+      </div>
+    `;
+  }
+})();
 
-  <!-- Navigation injected by /js/site-chrome.js -->
-  <div id="site-nav"></div>
+function renderWrestlerHistory(rows) {
+  const root = document.getElementById("page-root");
+  if (!root) return;
 
-  <main class="container">
+  if (!rows || rows.length === 0) {
+    root.innerHTML = `
+      <div class="panel">
+        <p>No match history found.</p>
+      </div>
+    `;
+    return;
+  }
 
-    <!-- Static page heading -->
-    <h1>Wrestler</h1>
+  const wrestlerName = rows[0].wrestler_name || "Wrestler";
+  const league = getQueryParam("league");
 
-    <!--
-      PRIMARY PAGE RENDER TARGET
+  const backLink = league
+    ? `<p><a href="${buildRepoLink("scoreboard/index.html", { league })}">← Back to Scoreboard</a></p>`
+    : "";
 
-      /wrestler/page.js will render wrestler match history here.
-      Standardized across all pages for consistent:
-        • loading states
-        • error rendering
-        • debugging
-    -->
-    <div id="page-root"></div>
+  root.innerHTML = `
+    <div class="page-header">
+      <h2 class="page-title">${safeText(wrestlerName)}</h2>
+      <p class="page-subtitle">Match history and results</p>
+    </div>
 
-  </main>
+    ${backLink}
 
-  <div id="site-footer"></div>
+    <div class="panel">
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Round</th>
+              <th>Opponent</th>
+              <th>Result</th>
+              <th style="text-align:right;">Red</th>
+              <th style="text-align:right;">Green</th>
+              <th>Win Type</th>
+              <th>End Type</th>
+            </tr>
+          </thead>
 
-  <!-- ===================================================== -->
-  <!-- Shared Script Layer                                   -->
-  <!-- ===================================================== -->
+          <tbody>
+            ${rows.map(r => `
+              <tr>
+                <td>${safeText(r.round_description || "—")}</td>
+                <td>
+                  ${wrestlerLink(
+                    r.opponent_wrestler_guid,
+                    r.opponent_wrestler_name || "—",
+                    league
+                  )}
+                </td>
+                <td>${safeText(r.result || "—")}</td>
+                <td style="text-align:right;">${fmtScore(r.red_score)}</td>
+                <td style="text-align:right;">${fmtScore(r.green_score)}</td>
+                <td>${safeText(r.win_type || "—")}</td>
+                <td>${safeText(r.end_type || "—")}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
 
-  <!-- Utility helpers -->
-  <script src="../js/utils.js"></script>
+/* -------------------------------------------------------------
+   Helpers
+------------------------------------------------------------- */
 
-  <!-- Navigation chrome renderer -->
-  <script src="../js/site-chrome.js"></script>
+function getBasePath() {
+  const parts = window.location.pathname.split("/").filter(Boolean);
+  return parts.length ? `/${parts[0]}` : "";
+}
 
-  <!-- ===================================================== -->
-  <!-- Data Layer                                            -->
-  <!-- ===================================================== -->
+function buildRepoLink(relativePath, params = {}) {
+  const basePath = getBasePath();
+  const url = new URL(`${basePath}/${relativePath}`, window.location.origin);
 
-  <!-- Supabase client library -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== null && value !== undefined && value !== "") {
+      url.searchParams.set(key, value);
+    }
+  });
 
-  <!-- PTTP API wrapper (queryView helper) -->
-  <script src="../js/api.js"></script>
+  return `${url.pathname}${url.search}`;
+}
 
-  <!-- ===================================================== -->
-  <!-- Page Controller                                       -->
-  <!-- ===================================================== -->
+function wrestlerLink(wrestlerGuid, label, league) {
+  if (!wrestlerGuid) return safeText(label);
 
-  <!-- Page-specific logic -->
-  <script src="./page.js"></script>
+  return `<a href="${buildRepoLink("wrestler/index.html", {
+    wrestler: wrestlerGuid,
+    league
+  })}">${safeText(label)}</a>`;
+}
 
-</body>
-</html>
+function fmtScore(value) {
+  if (value === null || value === undefined || value === "") return "—";
+  return String(value);
+}
+
+function safeText(value) {
+  const div = document.createElement("div");
+  div.textContent = value ?? "";
+  return div.innerHTML;
+}
