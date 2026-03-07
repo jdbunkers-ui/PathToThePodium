@@ -101,7 +101,7 @@ function renderTeamRoster(rows) {
                 <td>${safeText(r.weight_lbs || "—")}</td>
 
                 <td>
-                  <a href="${buildLeagueLink(`../wrestler/?wrestler=${encodeURIComponent(r.wrestler_guid)}`)}">
+                  <a href="${buildLeagueLink(`wrestler/index.html?wrestler=${encodeURIComponent(r.wrestler_guid)}`)}">
                     ${safeText(r.wrestler_name || "—")}
                   </a>
                 </td>
