@@ -3,25 +3,36 @@
    ========================================================= */
 
 :root {
-  /* Core analytics theme */
-  --bg-main: #0f172a;
-  --bg-panel: #1e293b;
-  --bg-panel-hover: #273449;
-  --bg-input: #111827;
 
-  --text-main: #f9fafb;
-  --text-muted: #9ca3af;
+  /* Page background */
+  --bg-main: #f5f3ef;
 
-  --accent-primary: #2563eb;
-  --accent-primary-hover: #3b82f6;
-  --accent-secondary: #10b981;
+  /* Panels / cards */
+  --bg-panel: #ffffff;
+  --bg-panel-hover: #f1efe9;
+  --bg-input: #fbfaf7;
 
-  --border-color: #334155;
-  --border-strong: #475569;
+  /* Text */
+  --text-main: #2f3437;
+  --text-muted: #6b7280;
 
-  --danger: #f87171;
+  /* Primary accent (slate blue) */
+  --accent-primary: #4f6d7a;
+  --accent-primary-hover: #3f5964;
 
-  --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.18);
+  /* Secondary accent (earth green) */
+  --accent-secondary: #6b8e73;
+
+  /* Borders */
+  --border-color: #e3dfd6;
+  --border-strong: #cfc8ba;
+
+  /* Alerts */
+  --danger: #c05656;
+
+  /* Shadows */
+  --shadow-soft: 0 6px 16px rgba(0,0,0,0.06);
+
 }
 
 * {
@@ -273,7 +284,7 @@ p {
 }
 
 .header-podium {
-  height: 80px;
+  height: 120px;
   width: auto;
   display: block;
   flex-shrink: 0;
