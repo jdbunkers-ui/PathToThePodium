@@ -27,37 +27,48 @@
 
   const navItems = league ? leagueNav : globalNav;
 
-  const links = navItems.map(item => {
-    const url = new URL(`${basePath}/${item.href}`, window.location.origin);
+  const links = navItems
+    .map((item) => {
+      const url = new URL(`${basePath}/${item.href}`, window.location.origin);
 
-    // Preserve league context when navigating within league pages
-    if (league && item.label !== "HOME") {
-      url.searchParams.set("league", league);
-    }
+      // Preserve league context when navigating within league pages
+      if (league && item.label !== "HOME") {
+        url.searchParams.set("league", league);
+      }
 
-    return `<a class="nav-link" href="${url.pathname}${url.search}">${item.label}</a>`;
-  }).join("");
+      return `<a class="nav-link" href="${url.pathname}${url.search}">${item.label}</a>`;
+    })
+    .join("");
 
-  const el = document.getElementById("site-nav");
-  if (el) {
-    el.innerHTML = `
-      <div class="site-header-inner">
-        <nav class="nav">${links}</nav>
-        <img src="${basePath}/images/podium.png" alt="Champion Wrestler" class="header-podium">
-      </div>
+  const navRoot = document.getElementById("site-nav");
+
+  if (navRoot) {
+    navRoot.innerHTML = `
+      <header class="site-header">
+        <div class="site-header-inner">
+          <nav class="nav" aria-label="Primary navigation">
+            ${links}
+          </nav>
+
+          <div class="site-brand">
+            <img
+              src="${basePath}/images/podium.png"
+              alt="Champion Wrestler"
+              class="header-podium"
+            >
+          </div>
+        </div>
+      </header>
+    `;
+  }
+
+  const footerRoot = document.getElementById("site-footer");
+
+  if (footerRoot) {
+    footerRoot.innerHTML = `
+      <footer class="footer" aria-label="Site footer">
+        Developed by White Blaze Analytics LLC
+      </footer>
     `;
   }
 })();
-
-// -------------------------------------------------------------
-// Footer Renderer
-// -------------------------------------------------------------
-const footer = document.getElementById("site-footer");
-
-if (footer) {
-  footer.innerHTML = `
-    <div class="footer">
-      Developed by White Blaze Analytics LLC
-    </div>
-  `;
-}
