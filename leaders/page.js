@@ -17,7 +17,20 @@
   const root = document.getElementById("page-root");
   if (!root) return;
 
-  root.innerHTML = `<p>Loading leaders…</p>`;
+  root.innerHTML = `
+    <div class="page-header">
+      <h2 class="page-title">Wrestler Leaders</h2>
+      <p class="page-subtitle">Top-scoring wrestlers in the selected fantasy league.</p>
+    </div>
+
+    <div class="panel">
+      <div class="skeleton table-row"></div>
+      <div class="skeleton table-row"></div>
+      <div class="skeleton table-row"></div>
+      <div class="skeleton table-row"></div>
+      <div class="skeleton table-row"></div>
+    </div>
+  `;
 
   try {
     const leagueGuid = requireParam("league");
@@ -36,12 +49,18 @@
     );
 
     renderLeaders(rows);
-
   } catch (err) {
     console.error("Leaders page failed to load:", err);
-    if (root.innerHTML.trim() === "") {
-      root.innerHTML = `<p>Unable to load leaders.</p>`;
-    }
+    root.innerHTML = `
+      <div class="page-header">
+        <h2 class="page-title">Wrestler Leaders</h2>
+        <p class="page-subtitle">Top-scoring wrestlers in the selected fantasy league.</p>
+      </div>
+
+      <div class="panel">
+        <p>Unable to load leaders.</p>
+      </div>
+    `;
   }
 })();
 
@@ -50,41 +69,55 @@ function renderLeaders(rows) {
   if (!root) return;
 
   if (!rows || rows.length === 0) {
-    root.innerHTML = `<p>No leader data found for this league.</p>`;
+    root.innerHTML = `
+      <div class="page-header">
+        <h2 class="page-title">Wrestler Leaders</h2>
+        <p class="page-subtitle">Top-scoring wrestlers in the selected fantasy league.</p>
+      </div>
+
+      <div class="panel">
+        <p>No leader data found for this league.</p>
+      </div>
+    `;
     return;
   }
 
   root.innerHTML = `
-    <h2>Wrestler Leaders</h2>
+    <div class="page-header">
+      <h2 class="page-title">Wrestler Leaders</h2>
+      <p class="page-subtitle">Top-scoring wrestlers in the selected fantasy league.</p>
+    </div>
 
-    <div class="table-wrap">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Rank</th>
-            <th>Wrestler</th>
-            <th>Team</th>
-            <th style="text-align:right;">Points</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          ${rows.map((r, i) => `
+    <div class="panel">
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
             <tr>
-              <td>${i + 1}</td>
-
-              <td>
-                <a href="${buildLeagueLink(`../wrestler/?wrestler=${encodeURIComponent(r.wrestler_guid)}`)}">
-                  ${safeText(r.wrestler_name || r.display_name || "—")}
-                </a>
-              </td>
-
-              <td>${safeText(r.fantasy_team_name || r.team_name || "—")}</td>
-              <td style="text-align:right;"><strong>${fmtPoints(r.total_points || r.points)}</strong></td>
+              <th>Rank</th>
+              <th>Wrestler</th>
+              <th>Team</th>
+              <th style="text-align:right;">Points</th>
             </tr>
-          `).join("")}
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody>
+            ${rows.map((r, i) => `
+              <tr>
+                <td>${i + 1}</td>
+
+                <td>
+                  <a href="${buildLeagueLink(`wrestler/index.html?wrestler=${encodeURIComponent(r.wrestler_guid)}`)}">
+                    ${safeText(r.wrestler_name || r.display_name || "—")}
+                  </a>
+                </td>
+
+                <td>${safeText(r.fantasy_team_name || r.team_name || "—")}</td>
+                <td style="text-align:right;"><strong>${fmtPoints(r.total_points || r.points)}</strong></td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      </div>
     </div>
   `;
 }
