@@ -14,14 +14,25 @@
 // -------------------------------------------------------------
 
 (async function initTeamPage() {
-
   const root = document.getElementById("page-root");
   if (!root) return;
 
-  root.innerHTML = `<p>Loading team roster…</p>`;
+  root.innerHTML = `
+    <div class="page-header">
+      <h2 class="page-title">Fantasy Team Roster</h2>
+      <p class="page-subtitle">Roster and wrestler points for the selected fantasy team.</p>
+    </div>
+
+    <div class="panel">
+      <div class="skeleton table-row"></div>
+      <div class="skeleton table-row"></div>
+      <div class="skeleton table-row"></div>
+      <div class="skeleton table-row"></div>
+      <div class="skeleton table-row"></div>
+    </div>
+  `;
 
   try {
-
     const teamGuid = requireParam("team");
 
     const rows = await queryView(
@@ -31,64 +42,80 @@
     );
 
     renderTeamRoster(rows);
-
   } catch (err) {
-
     console.error("Team roster failed to load:", err);
-    root.innerHTML = `<p>Unable to load team roster.</p>`;
+    root.innerHTML = `
+      <div class="page-header">
+        <h2 class="page-title">Fantasy Team Roster</h2>
+        <p class="page-subtitle">Roster and wrestler points for the selected fantasy team.</p>
+      </div>
 
+      <div class="panel">
+        <p>Unable to load team roster.</p>
+      </div>
+    `;
   }
-
 })();
 
-
 function renderTeamRoster(rows) {
-
   const root = document.getElementById("page-root");
   if (!root) return;
 
   if (!rows || rows.length === 0) {
-    root.innerHTML = `<p>No roster found.</p>`;
+    root.innerHTML = `
+      <div class="page-header">
+        <h2 class="page-title">Fantasy Team Roster</h2>
+        <p class="page-subtitle">Roster and wrestler points for the selected fantasy team.</p>
+      </div>
+
+      <div class="panel">
+        <p>No roster found.</p>
+      </div>
+    `;
     return;
   }
 
   const teamName = rows[0].team_name || "Fantasy Team";
 
   root.innerHTML = `
-    <h2>${safeText(teamName)}</h2>
+    <div class="page-header">
+      <h2 class="page-title">${safeText(teamName)}</h2>
+      <p class="page-subtitle">Roster and wrestler points for this fantasy team.</p>
+    </div>
 
-    <div class="table-wrap">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Weight</th>
-            <th>Wrestler</th>
-            <th>School</th>
-            <th style="text-align:right;">Points</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          ${rows.map(r => `
+    <div class="panel">
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
             <tr>
-              <td>${safeText(r.weight_lbs || "—")}</td>
-
-              <td>
-                <a href="${buildLeagueLink(`../wrestler/?wrestler=${encodeURIComponent(r.wrestler_guid)}`)}">
-                  ${safeText(r.wrestler_name || "—")}
-                </a>
-              </td>
-
-              <td>${safeText(r.college_team_name || "—")}</td>
-              <td style="text-align:right;"><strong>${fmtPoints(r.wrestler_total_points)}</strong></td>
+              <th>Weight</th>
+              <th>Wrestler</th>
+              <th>School</th>
+              <th style="text-align:right;">Points</th>
             </tr>
-          `).join("")}
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody>
+            ${rows.map(r => `
+              <tr>
+                <td>${safeText(r.weight_lbs || "—")}</td>
+
+                <td>
+                  <a href="${buildLeagueLink(`../wrestler/?wrestler=${encodeURIComponent(r.wrestler_guid)}`)}">
+                    ${safeText(r.wrestler_name || "—")}
+                  </a>
+                </td>
+
+                <td>${safeText(r.college_team_name || "—")}</td>
+                <td style="text-align:right;"><strong>${fmtPoints(r.wrestler_total_points)}</strong></td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      </div>
     </div>
   `;
 }
-
 
 /* -------------------------------------------------------------
    Helpers
