@@ -166,13 +166,16 @@ p {
    Navigation
    ========================================================= */
 
+.site-header {
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border-color);
+}
+
 .site-header-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 24px;
-  background: var(--bg-panel);
-  border-bottom: 1px solid var(--border-color);
 }
 
 .nav {
@@ -193,6 +196,13 @@ p {
 
 .nav-link:hover {
   color: var(--accent-primary);
+}
+
+.site-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 16px;
 }
 
 .header-podium {
