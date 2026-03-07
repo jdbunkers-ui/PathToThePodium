@@ -12,7 +12,20 @@
   const root = document.getElementById("page-root");
   if (!root) return;
 
-  root.innerHTML = `<p>Loading scoreboard…</p>`;
+  root.innerHTML = `
+    <div class="page-header">
+      <h2 class="page-title">League Scoreboard</h2>
+      <p class="page-subtitle">Team standings for the selected fantasy league.</p>
+    </div>
+
+    <div class="panel">
+      <div class="skeleton table-row"></div>
+      <div class="skeleton table-row"></div>
+      <div class="skeleton table-row"></div>
+      <div class="skeleton table-row"></div>
+      <div class="skeleton table-row"></div>
+    </div>
+  `;
 
   try {
     const leagueGuid = requireParam("league");
@@ -29,12 +42,18 @@
     );
 
     renderScoreboard(rows, leagueGuid);
-
   } catch (err) {
     console.error("Scoreboard page failed to load:", err);
-    if (root.innerHTML.trim() === "") {
-      root.innerHTML = `<p>Unable to load scoreboard.</p>`;
-    }
+    root.innerHTML = `
+      <div class="page-header">
+        <h2 class="page-title">League Scoreboard</h2>
+        <p class="page-subtitle">Team standings for the selected fantasy league.</p>
+      </div>
+
+      <div class="panel">
+        <p>Unable to load scoreboard.</p>
+      </div>
+    `;
   }
 })();
 
@@ -43,41 +62,55 @@ function renderScoreboard(rows, leagueGuid) {
   if (!root) return;
 
   if (!rows || rows.length === 0) {
-    root.innerHTML = `<p>No teams found for this league.</p>`;
+    root.innerHTML = `
+      <div class="page-header">
+        <h2 class="page-title">League Scoreboard</h2>
+        <p class="page-subtitle">Team standings for the selected fantasy league.</p>
+      </div>
+
+      <div class="panel">
+        <p>No teams found for this league.</p>
+      </div>
+    `;
     return;
   }
 
   root.innerHTML = `
-    <h2>League Scoreboard</h2>
+    <div class="page-header">
+      <h2 class="page-title">League Scoreboard</h2>
+      <p class="page-subtitle">Team standings for the selected fantasy league.</p>
+    </div>
 
-    <div class="table-wrap">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Team</th>
-            <th style="text-align:right;">Consolation</th>
-            <th style="text-align:right;">Championship</th>
-            <th style="text-align:right;">Bonus</th>
-            <th style="text-align:right;">Total</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          ${rows.map(r => `
+    <div class="panel">
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
             <tr>
-              <td>
-                <a href="../team/?team=${encodeURIComponent(r.fantasy_team_guid)}&league=${encodeURIComponent(leagueGuid)}">
-                  ${safeText(r.fantasy_team_name || r.team_name || "—")}
-                </a>
-              </td>
-              <td style="text-align:right;">${fmtPoints(r.consolation_points)}</td>
-              <td style="text-align:right;">${fmtPoints(r.championship_points)}</td>
-              <td style="text-align:right;">${fmtPoints(r.bonus_points)}</td>
-              <td style="text-align:right;"><strong>${fmtPoints(r.total_points)}</strong></td>
+              <th>Team</th>
+              <th style="text-align:right;">Consolation</th>
+              <th style="text-align:right;">Championship</th>
+              <th style="text-align:right;">Bonus</th>
+              <th style="text-align:right;">Total</th>
             </tr>
-          `).join("")}
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody>
+            ${rows.map(r => `
+              <tr>
+                <td>
+                  <a href="../team/?team=${encodeURIComponent(r.fantasy_team_guid)}&league=${encodeURIComponent(leagueGuid)}">
+                    ${safeText(r.fantasy_team_name || r.team_name || "—")}
+                  </a>
+                </td>
+                <td style="text-align:right;">${fmtPoints(r.consolation_points)}</td>
+                <td style="text-align:right;">${fmtPoints(r.championship_points)}</td>
+                <td style="text-align:right;">${fmtPoints(r.bonus_points)}</td>
+                <td style="text-align:right;"><strong>${fmtPoints(r.total_points)}</strong></td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      </div>
     </div>
   `;
 }
