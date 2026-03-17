@@ -4,9 +4,11 @@
   const params = new URLSearchParams(window.location.search);
   const league = params.get("league");
 
-  // Detect repo base path for GitHub Pages project sites
+  // Detect repo base path for GitHub Pages project sites only.
+  // On custom domains, use root-relative paths with no repo prefix.
+  const isGitHubPagesHost = window.location.hostname.endsWith("github.io");
   const parts = window.location.pathname.split("/").filter(Boolean);
-  const basePath = parts.length ? `/${parts[0]}` : "";
+  const basePath = isGitHubPagesHost && parts.length ? `/${parts[0]}` : "";
 
   const globalNav = [
     { label: "HOME", href: "index.html" },
