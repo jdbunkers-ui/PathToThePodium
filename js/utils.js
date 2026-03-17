@@ -29,8 +29,8 @@ function requireParam(name) {
 
 /*
 Helper: detect repo base path for GitHub Pages project sites.
-Example pathname: /PathToThePodium/scoreboard/index.html
-=> basePath = /PathToThePodium
+Example pathname: /TopofthePodium/scoreboard/index.html
+=> basePath = /TopofthePodium
 */
 function getBasePath() {
   const parts = window.location.pathname.split("/").filter(Boolean);
