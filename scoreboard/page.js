@@ -98,7 +98,7 @@ function renderScoreboard(rows, leagueGuid) {
             ${rows.map(r => `
               <tr>
                 <td>
-                  <a href="${buildLeagueLink(`team/index.html?team=${encodeURIComponent(r.fantasy_team_guid)}`)}">
+                  <a href="${buildLeagueLink(`/team/index.html?team=${encodeURIComponent(r.fantasy_team_guid)}`)}">
                     ${safeText(r.fantasy_team_name || r.team_name || "—")}
                   </a>
                 </td>
