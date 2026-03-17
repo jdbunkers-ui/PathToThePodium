@@ -8,23 +8,12 @@ const db = window.supabase.createClient(
   SUPABASE_ANON_KEY
 );
 
-// ------------------------------------------------------------
-// Optional: TEST CONNECTION (disable for prod)
-// ------------------------------------------------------------
-// async function testSupabaseConnection() {
-//   const { data, error } = await db
-//     .from("v_college_team_bonus_points")
-//     .select("*")
-//     .limit(5);
-//
-//   console.log("Supabase TEST DATA:", data);
-//   console.log("Supabase TEST ERROR:", error);
-// }
-// testSupabaseConnection();
-
+// Expose client globally for page controllers
+window.db = db;
+window.supabaseClient = db;
 
 // ------------------------------------------------------------
-// Generic view query helper
+// Generic view/table query helper
 // ------------------------------------------------------------
 async function queryView(viewName, filters = {}, orderBy = null) {
   let query = db.from(viewName).select("*");
@@ -49,15 +38,20 @@ async function queryView(viewName, filters = {}, orderBy = null) {
   return data || [];
 }
 
-
 // ------------------------------------------------------------
 // RPC helper (for writes like submit_fantasy_team)
 // ------------------------------------------------------------
 async function callRpc(fnName, params = {}) {
   const { data, error } = await db.rpc(fnName, params);
+
   if (error) {
     console.error("Supabase RPC Error:", error);
     throw error;
   }
+
   return data;
 }
+
+// Optional: expose helpers globally if page scripts need them
+window.queryView = queryView;
+window.callRpc = callRpc;
