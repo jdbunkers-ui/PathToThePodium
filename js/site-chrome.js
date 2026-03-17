@@ -1,6 +1,28 @@
 // /js/site-chrome.js
 (function () {
 
+  // -------------------------------------------------------------
+  // Google Analytics (added)
+  // -------------------------------------------------------------
+  if (!window.__gaInitialized) {
+    window.__gaInitialized = true;
+
+    const script1 = document.createElement('script');
+    script1.async = true;
+    script1.src = "https://www.googletagmanager.com/gtag/js?id=G-7V21RTQW5X";
+
+    const script2 = document.createElement('script');
+    script2.innerHTML = `
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-7V21RTQW5X');
+    `;
+
+    document.head.appendChild(script1);
+    document.head.appendChild(script2);
+  }
+
   const params = new URLSearchParams(window.location.search);
   const league = params.get("league");
 
