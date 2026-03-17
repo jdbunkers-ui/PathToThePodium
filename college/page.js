@@ -65,7 +65,7 @@ function renderCollegeStandings(rows) {
       </div>
 
       <div class="panel">
-        <p>No college data available.</p>
+        <p>No college standings are available yet. Once active-season match results are loaded, NCAA team scores will appear here.</p>
       </div>
     `;
     return;
@@ -104,7 +104,7 @@ function renderCollegeStandings(rows) {
 }
 
 /* -------------------------------------------------------------
-   Helpers (kept local for now)
+   Helpers
 ------------------------------------------------------------- */
 
 function fmtPoints(value) {
