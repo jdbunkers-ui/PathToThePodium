@@ -2,14 +2,6 @@
 // -------------------------------------------------------------
 // FAQ Page Controller
 // -------------------------------------------------------------
-// Purpose:
-//   • Query Supabase table: faq
-//   • Render active FAQs ordered by sort_order
-//
-// Dependencies:
-//   • api.js: queryView() or window.supabase client setup
-//   • Supabase client loaded in faq/index.html
-// -------------------------------------------------------------
 
 (async function initFaqPage() {
   const root = document.getElementById("page-root");
@@ -18,22 +10,14 @@
   root.innerHTML = `<p>Loading FAQs…</p>`;
 
   try {
-    const supabase = window.supabaseClient || window.supabase;
+    // IMPORTANT: use your existing helper
+    const rows = await queryView(
+      "faq",
+      { is_active: true },
+      { column: "sort_order", ascending: true }
+    );
 
-    if (!supabase) {
-      throw new Error("Supabase client is not available on window.");
-    }
-
-    const { data, error } = await supabase
-      .from("faq")
-      .select("faq_guid, question, answer, sort_order")
-      .eq("is_active", true)
-      .order("sort_order", { ascending: true })
-      .order("created_at", { ascending: true });
-
-    if (error) throw error;
-
-    renderFaqs(data || []);
+    renderFaqs(rows || []);
   } catch (err) {
     console.error("FAQ page failed to load:", err);
     root.innerHTML = `<p>Unable to load FAQs right now.</p>`;
