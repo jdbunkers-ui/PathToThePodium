@@ -28,11 +28,20 @@ function requireParam(name) {
 }
 
 /*
-Helper: detect repo base path for GitHub Pages project sites.
-Example pathname: /BracketLeaders/scoreboard/index.html
-=> basePath = /BracketLeaders
+Helper: detect repo base path for GitHub Pages project sites only.
+Example:
+  GitHub Pages project site:
+    https://username.github.io/BracketLeaders/scoreboard/index.html
+    => basePath = /BracketLeaders
+
+  Custom domain:
+    https://bracketleaders.com/scoreboard/index.html
+    => basePath = ""
 */
 function getBasePath() {
+  const isGitHubPagesHost = window.location.hostname.endsWith("github.io");
+  if (!isGitHubPagesHost) return "";
+
   const parts = window.location.pathname.split("/").filter(Boolean);
   return parts.length ? `/${parts[0]}` : "";
 }
