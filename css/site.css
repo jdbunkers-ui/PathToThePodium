@@ -32,7 +32,6 @@
 
   /* Shadows */
   --shadow-soft: 0 6px 16px rgba(0,0,0,0.06);
-
 }
 
 * {
@@ -40,7 +39,7 @@
 }
 
 html {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 body {
@@ -127,7 +126,7 @@ p {
 }
 
 /* =========================================================
-   Forms & Buttons (League Creation UI)
+   Forms & Buttons
    ========================================================= */
 
 .form-card {
@@ -149,7 +148,8 @@ p {
 }
 
 .input,
-.select {
+.select,
+.textarea {
   width: 100%;
   padding: 10px 12px;
   border-radius: 6px;
@@ -159,16 +159,22 @@ p {
   font-size: 14px;
 }
 
+.textarea {
+  resize: vertical;
+}
+
 .input::placeholder,
-.select::placeholder {
+.select::placeholder,
+.textarea::placeholder {
   color: var(--text-muted);
 }
 
 .input:focus,
-.select:focus {
+.select:focus,
+.textarea:focus {
   outline: none;
   border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+  box-shadow: 0 0 0 3px rgba(79, 109, 122, 0.15);
 }
 
 .row {
@@ -182,6 +188,7 @@ p {
 }
 
 .btn {
+  display: inline-block;
   padding: 10px 16px;
   border-radius: 6px;
   border: 1px solid var(--border-color);
@@ -189,6 +196,7 @@ p {
   color: var(--text-main);
   cursor: pointer;
   font-weight: 600;
+  text-decoration: none;
   transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
 }
 
@@ -209,6 +217,23 @@ p {
   border-color: var(--accent-primary-hover);
 }
 
+.btn-link {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-panel);
+  color: var(--text-main);
+  font-size: 13px;
+  text-decoration: none;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-link:hover {
+  background: var(--bg-panel-hover);
+  border-color: var(--accent-primary);
+}
+
 .msg {
   margin-top: 12px;
   font-size: 14px;
@@ -217,6 +242,12 @@ p {
 
 .msg.error {
   color: var(--danger);
+}
+
+.helper-text {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--text-muted);
 }
 
 /* =========================================================
@@ -293,7 +324,7 @@ p {
 }
 
 /* =========================================================
-   Cards (Landing Page)
+   Cards / Content Blocks
    ========================================================= */
 
 .card-grid {
@@ -302,22 +333,38 @@ p {
   gap: 16px;
 }
 
+.card,
+.content-card,
+.comment-card,
+.toolbar-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  box-shadow: var(--shadow-soft);
+}
+
 .card {
   display: block;
   padding: 16px;
-  border-radius: 10px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-panel);
   text-decoration: none;
   color: var(--text-main);
   transition: transform 0.1s ease, border-color 0.1s ease, background 0.1s ease;
-  box-shadow: var(--shadow-soft);
 }
 
 .card:hover {
   transform: translateY(-2px);
   border-color: var(--accent-primary);
   background: var(--bg-panel-hover);
+}
+
+.content-card,
+.comment-card,
+.toolbar-card {
+  padding: 16px;
+}
+
+.content-card {
+  padding: 20px;
 }
 
 .card-title {
@@ -335,6 +382,22 @@ p {
   margin-top: 8px;
   font-size: 13px;
   color: var(--accent-primary);
+}
+
+.comment-card h3 {
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.comment-card p {
+  margin: 0 0 6px;
+}
+
+.comment-card small {
+  font-size: 12px;
+  color: var(--text-muted);
 }
 
 /* =========================================================
@@ -358,7 +421,7 @@ p {
 }
 
 .table thead {
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--bg-panel-hover);
 }
 
 .table th,
@@ -386,7 +449,7 @@ p {
 }
 
 .table tbody tr:hover {
-  background: rgba(37, 99, 235, 0.08);
+  background: rgba(79, 109, 122, 0.08);
 }
 
 .table tbody tr:last-child td {
@@ -395,12 +458,48 @@ p {
 
 /* Optional utility if you later want highlighted top rows */
 .table .rank-1 {
-  background: rgba(16, 185, 129, 0.08);
+  background: rgba(107, 142, 115, 0.10);
 }
 
 .table .rank-2,
 .table .rank-3 {
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(79, 109, 122, 0.04);
+}
+
+/* =========================================================
+   FAQ
+   ========================================================= */
+
+.faq-item {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 14px 16px;
+  box-shadow: var(--shadow-soft);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.faq-item:hover {
+  border-color: var(--accent-primary);
+  background: var(--bg-panel-hover);
+}
+
+.faq-item summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--text-main);
+  outline: none;
+}
+
+.faq-item[open] summary {
+  color: var(--accent-primary);
+}
+
+.faq-answer {
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--text-main);
 }
 
 /* =========================================================
@@ -452,6 +551,14 @@ p {
   100% {
     opacity: 0.45;
   }
+}
+
+/* =========================================================
+   Utilities
+   ========================================================= */
+
+.stack-md > * + * {
+  margin-top: 16px;
 }
 
 /* =========================================================
@@ -516,262 +623,10 @@ p {
     padding: 10px 12px;
   }
 
-  .panel {
+  .panel,
+  .content-card,
+  .comment-card,
+  .toolbar-card {
     padding: 14px;
   }
-}
-
-
-/* =========================================================
-   Stack Utility (Vertical spacing)
-   ========================================================= */
-
-.stack-md > * + * {
-  margin-top: 16px;
-}
-
-/* =========================================================
-   FAQ
-   ========================================================= */
-
-.faq-item {
-  background: var(--bg-panel);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  padding: 14px 16px;
-  box-shadow: var(--shadow-soft);
-  transition: border-color 0.15s ease, background 0.15s ease;
-}
-
-.faq-item:hover {
-  border-color: var(--accent-primary);
-  background: var(--bg-panel-hover);
-}
-
-.faq-item summary {
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 15px;
-  color: var(--text-main);
-  outline: none;
-}
-
-.faq-item[open] summary {
-  color: var(--accent-primary);
-}
-
-.faq-answer {
-  margin-top: 10px;
-  font-size: 14px;
-  color: var(--text-main);
-}
-
-/* =========================================================
-   Content Cards (About page sections)
-   ========================================================= */
-
-.content-card {
-  background: var(--bg-panel);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: var(--shadow-soft);
-}
-
-/* =========================================================
-   Comments
-   ========================================================= */
-
-.comment-card {
-  background: var(--bg-panel);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  padding: 14px 16px;
-  box-shadow: var(--shadow-soft);
-}
-
-.comment-card h3 {
-  margin: 0 0 6px;
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text-main);
-}
-
-.comment-card p {
-  margin: 0 0 6px;
-  font-size: 14px;
-}
-
-.comment-card small {
-  font-size: 12px;
-  color: var(--text-muted);
-}
-
-/* =========================================================
-   Form Enhancements (for comments/search)
-   ========================================================= */
-
-.textarea {
-  width: 100%;
-  padding: 10px 12px;
-  border-radius: 6px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-input);
-  color: var(--text-main);
-  font-size: 14px;
-  resize: vertical;
-}
-
-.textarea:focus {
-  outline: none;
-  border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px rgba(79, 109, 122, 0.15);
-}
-
-/* =========================================================
-   Toolbar Card (search/filter area)
-   ========================================================= */
-
-.toolbar-card {
-  background: var(--bg-panel);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  padding: 16px;
-  margin-bottom: 16px;
-  box-shadow: var(--shadow-soft);
-}
-
-/* =========================================================
-   Button Variants (links styled as buttons)
-   ========================================================= */
-
-.btn-link {
-  display: inline-block;
-  padding: 6px 10px;
-  border-radius: 6px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-panel);
-  color: var(--text-main);
-  font-size: 13px;
-  text-decoration: none;
-  transition: background 0.15s ease, border-color 0.15s ease;
-}
-
-.btn-link:hover {
-  background: var(--bg-panel-hover);
-  border-color: var(--accent-primary);
-}
-
-/* =========================================================
-   Helper Text
-   ========================================================= */
-
-.helper-text {
-  margin-top: 6px;
-  font-size: 12px;
-  color: var(--text-muted);
-}
-
-
-/* =========================================================
-   Utilities / New UI (FAQ, Comments, Toolbar)
-   ========================================================= */
-
-.stack-md > * + * {
-  margin-top: 16px;
-}
-
-/* Toolbar (search box area) */
-.toolbar-card {
-  background: var(--bg-panel);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  padding: 16px;
-  margin-bottom: 16px;
-  box-shadow: var(--shadow-soft);
-}
-
-/* FAQ */
-.faq-item {
-  background: var(--bg-panel);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  padding: 14px 16px;
-  box-shadow: var(--shadow-soft);
-}
-
-.faq-item summary {
-  cursor: pointer;
-  font-weight: 600;
-}
-
-.faq-answer {
-  margin-top: 10px;
-}
-
-/* Content sections (About page) */
-.content-card {
-  background: var(--bg-panel);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: var(--shadow-soft);
-}
-
-/* Comments */
-.comment-card {
-  background: var(--bg-panel);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  padding: 14px 16px;
-  box-shadow: var(--shadow-soft);
-}
-
-.comment-card h3 {
-  margin: 0 0 6px;
-  font-size: 14px;
-}
-
-.comment-card small {
-  font-size: 12px;
-  color: var(--text-muted);
-}
-
-/* Textarea */
-.textarea {
-  width: 100%;
-  padding: 10px 12px;
-  border-radius: 6px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-input);
-  font-size: 14px;
-  resize: vertical;
-}
-
-.textarea:focus {
-  outline: none;
-  border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px rgba(79, 109, 122, 0.15);
-}
-
-/* Helper text */
-.helper-text {
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-top: 6px;
-}
-
-/* Button link style */
-.btn-link {
-  padding: 6px 10px;
-  border-radius: 6px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-panel);
-  font-size: 13px;
-  text-decoration: none;
-}
-
-.btn-link:hover {
-  background: var(--bg-panel-hover);
-  border-color: var(--accent-primary);
 }
