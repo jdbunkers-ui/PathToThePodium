@@ -671,3 +671,107 @@ p {
   font-size: 12px;
   color: var(--text-muted);
 }
+
+
+/* =========================================================
+   Utilities / New UI (FAQ, Comments, Toolbar)
+   ========================================================= */
+
+.stack-md > * + * {
+  margin-top: 16px;
+}
+
+/* Toolbar (search box area) */
+.toolbar-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-soft);
+}
+
+/* FAQ */
+.faq-item {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 14px 16px;
+  box-shadow: var(--shadow-soft);
+}
+
+.faq-item summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.faq-answer {
+  margin-top: 10px;
+}
+
+/* Content sections (About page) */
+.content-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: var(--shadow-soft);
+}
+
+/* Comments */
+.comment-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 14px 16px;
+  box-shadow: var(--shadow-soft);
+}
+
+.comment-card h3 {
+  margin: 0 0 6px;
+  font-size: 14px;
+}
+
+.comment-card small {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Textarea */
+.textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-input);
+  font-size: 14px;
+  resize: vertical;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(79, 109, 122, 0.15);
+}
+
+/* Helper text */
+.helper-text {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+/* Button link style */
+.btn-link {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-panel);
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.btn-link:hover {
+  background: var(--bg-panel-hover);
+  border-color: var(--accent-primary);
+}
