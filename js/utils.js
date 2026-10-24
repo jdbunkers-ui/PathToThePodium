@@ -71,7 +71,7 @@ Expects a repo-relative path like:
   "wrestler/index.html?wrestler=123"
 */
 function navigateWithLeague(path) {
-  const league = getQueryParam("league");
+  const league = getQueryParam("league") || window.BLPublicContext?.fantasy_league_guid;
   const [relativePath, queryString = ""] = String(path).split("?");
 
   const params = new URLSearchParams(queryString);
@@ -89,7 +89,7 @@ Expects a repo-relative path like:
   "wrestler/index.html?wrestler=123"
 */
 function buildLeagueLink(path) {
-  const league = getQueryParam("league");
+  const league = getQueryParam("league") || window.BLPublicContext?.fantasy_league_guid;
   const [relativePath, queryString = ""] = String(path).split("?");
 
   const params = new URLSearchParams(queryString);
@@ -97,5 +97,7 @@ function buildLeagueLink(path) {
     params.set("league", league);
   }
 
+  const event = getQueryParam("event") || window.BLPublicContext?.event_guid;
+  if (event && !params.has("event")) params.set("event", event);
   return buildRepoLink(relativePath, Object.fromEntries(params.entries()));
 }
