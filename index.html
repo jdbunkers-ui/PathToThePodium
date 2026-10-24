@@ -50,6 +50,8 @@
 
   <!-- Global site styling -->
   <link rel="stylesheet" href="./css/site.css?v=5.1.0" />
+  <!-- Homepage-only 2027 announcement styles -->
+  <link rel="stylesheet" href="./css/home-2027.css?v=5.1.1" />
 
   <!-- Repo-relative favicon for GitHub Pages -->
   <link rel="icon" href="/BracketLeaders/favicon.ico" />
@@ -96,29 +98,97 @@
   <!-- site-chrome.js injects navigation here -->
   <div id="site-nav"></div>
 
-  <main class="container">
-    <section class="page-header">
-      <h1 class="page-title">Bracket Leaders</h1>
-      <p class="page-subtitle">
-        College wrestling fantasy leagues, NCAA scoreboards, and team tracking for fans who want to follow the season in a more competitive way.
-      </p>
+  <main class="container home-2027">
+    <!-- 2027 season launch: account features and tournament expansion -->
+    <section class="launch-hero" aria-labelledby="launch-title">
+      <div class="launch-hero-copy">
+        <span class="launch-eyebrow">New for the 2027 season</span>
+        <h1 class="launch-title" id="launch-title">Bracket Leaders 2027.<br><span>A bigger way to compete.</span></h1>
+        <p class="launch-hero-description">
+          Your fantasy wrestling headquarters just got bigger. Create a commissioner account,
+          run multiple leagues, and get ready for more conference and national championships.
+        </p>
+        <div class="launch-hero-actions">
+          <a class="btn primary" href="./new_league/index.html">Create a League <span class="launch-cta-arrow" aria-hidden="true">&rarr;</span></a>
+          <a class="btn" href="#tournaments-2027">Explore 2027 Tournaments</a>
+        </div>
+        <p class="launch-hero-footnote">Just here for the results? Public league scoreboards remain open to everyone.</p>
+      </div>
+      <div class="launch-hero-aside" aria-hidden="true">
+        <div class="launch-hero-year">2027</div>
+        <div class="launch-hero-aside-rule"></div>
+        <p class="launch-hero-aside-caption">More tournaments<br>More bragging rights</p>
+      </div>
     </section>
 
-    <section class="content-card stack-md">
-      <h2>College Wrestling Fantasy Leagues</h2>
-      <p>
-        Bracket Leaders is built for college wrestling fans who want more than just results. Browse fantasy leagues, follow NCAA wrestling scoreboards, and track your fantasy team throughout the season.
-      </p>
-      <p>
-        Whether you are following duals, conference tournaments, or the NCAA Championships, the site helps you stay connected to league standings, roster performance, and the race to the Bracket Leaders.
-      </p>
-      <p>
-        Use the league table below to find active fantasy leagues and jump directly into each scoreboard.
-      </p>
+    <section class="launch-section" aria-labelledby="launch-whats-new-title">
+      <div class="launch-section-header">
+        <span class="launch-section-kicker">Built for commissioners</span>
+        <h2 class="launch-section-title" id="launch-whats-new-title">What's New in 2027</h2>
+        <p class="launch-section-description">More control for the people who make fantasy wrestling happen.</p>
+      </div>
+      <div class="launch-feature-grid">
+        <article class="launch-feature-card">
+          <span class="launch-feature-no">01 / ACCOUNTS</span>
+          <h3>Your Own Commissioner Account</h3>
+          <p>Sign up once, create your leagues, and return anytime to manage them.</p>
+        </article>
+        <article class="launch-feature-card">
+          <span class="launch-feature-no">02 / FLEXIBILITY</span>
+          <h3>One Account. Multiple Leagues.</h3>
+          <p>Keep your office pools, friends-and-family leagues, and tournament picks together.</p>
+        </article>
+        <article class="launch-feature-card">
+          <span class="launch-feature-no">03 / EXPANSION</span>
+          <h3>More Tournaments to Choose From</h3>
+          <p>Go beyond one championship with new conference, NCAA division, and women's events.</p>
+        </article>
+      </div>
     </section>
 
-    <!-- Primary render target -->
-    <div id="page-root"></div>
+    <section class="launch-section" id="tournaments-2027" aria-labelledby="launch-tournaments-title">
+      <div class="launch-section-header">
+        <span class="launch-section-kicker">The 2027 lineup</span>
+        <h2 class="launch-section-title" id="launch-tournaments-title">2027 Tournament Offerings</h2>
+        <p class="launch-section-description">Seven championship events. Plenty of reasons to start a new rivalry.</p>
+      </div>
+      <div class="launch-tournament-grid">
+        <article class="launch-tournament-card">
+          <span class="launch-tournament-type">Conference</span>
+          <h3 class="launch-tournament-name">Big Ten Championships</h3>
+        </article>
+        <article class="launch-tournament-card">
+          <span class="launch-tournament-type">Conference</span>
+          <h3 class="launch-tournament-name">Big 12 Championships</h3>
+        </article>
+        <article class="launch-tournament-card">
+          <span class="launch-tournament-type">Conference</span>
+          <h3 class="launch-tournament-name">EIWA Championships</h3>
+        </article>
+        <article class="launch-tournament-card">
+          <span class="launch-tournament-type">NCAA Championship</span>
+          <h3 class="launch-tournament-name">Division I Men's</h3>
+        </article>
+        <article class="launch-tournament-card">
+          <span class="launch-tournament-type">NCAA Championship</span>
+          <h3 class="launch-tournament-name">Division II Men's</h3>
+        </article>
+        <article class="launch-tournament-card">
+          <span class="launch-tournament-type">NCAA Championship</span>
+          <h3 class="launch-tournament-name">Division III Men's</h3>
+        </article>
+        <article class="launch-tournament-card">
+          <span class="launch-tournament-type">NCAA Championship</span>
+          <h3 class="launch-tournament-name">Women's National Championship</h3>
+        </article>
+      </div>
+      <p class="launch-availability-note">2027 leagues can be created now. Rosters and scoring open as tournament fields, deadlines, and payment options become available.</p>
+    </section>
+
+    <!-- Existing public league directory and scoreboard links remain unchanged -->
+    <section class="launch-leagues" id="leagues" aria-label="Browse public leagues">
+      <div id="page-root"></div>
+    </section>
   </main>
 
   <div id="site-footer"></div>
