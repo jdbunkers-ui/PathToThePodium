@@ -1,171 +1,111 @@
-(async function initAddTeamPage() {
+(async function initAddTeam() {
+  "use strict";
   const root = document.getElementById("page-root");
-  if (!root) return;
-
-  function escapeHtml(s) {
-    return String(s ?? "")
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
-  }
-
-  // --- Helpers (use your utils.js if you already have equivalents) ---
-  function getParam(name) {
-    const u = new URL(window.location.href);
-    return u.searchParams.get(name);
-  }
-
-  const leagueName = (getParam("league_name") || "").trim();
-  if (!leagueName) {
-    root.innerHTML = `<p>Missing league_name. Please start from Create League.</p>`;
+  const A = window.BLAuth;
+  const leagueGuid = new URLSearchParams(location.search).get("league");
+  if (!leagueGuid) {
+    root.innerHTML = `<section class="form-card account-card"><h2>Choose a league from My Leagues</h2>
+      <p>Team setup now uses your account’s league list. Open a league there and choose Add team.</p>
+      <a class="btn primary" href="${A.escape(buildRepoLink("my_leagues/index.html"))}">My Leagues</a></section>`;
     return;
   }
+  const draftKey = `bl-team-draft-v1:${leagueGuid}`;
+  let draft = {};
+  try { draft = JSON.parse(sessionStorage.getItem(draftKey) || "{}"); } catch (_) { /* optional storage */ }
 
-  const WEIGHTS = [125, 133, 141, 149, 157, 165, 174, 184, 197, 285];
-
-  root.innerHTML = `
-    <div class="form-card">
-      <h2>Add Team</h2>
-
-      <label class="label">League Name</label>
-      <input class="input" type="text" value="${escapeHtml(leagueName)}" disabled />
-
-      <label class="label">Team Name</label>
-      <input id="team-name" class="input" type="text" placeholder="e.g., The Mat Monsters" />
-
-      <div id="weights-wrap"></div>
-
-      <div class="actions">
-        <button id="add-another" class="btn">Add Another Team</button>
-        <button id="done" class="btn primary">Done</button>
-      </div>
-
-      <p id="msg" class="msg"></p>
-    </div>
-  `;
-
-  const weightsWrap = document.getElementById("weights-wrap");
-  const teamNameEl = document.getElementById("team-name");
-  const msgEl = document.getElementById("msg");
-  const addAnotherBtn = document.getElementById("add-another");
-  const doneBtn = document.getElementById("done");
-
-  function setMsg(text, isError = false) {
-    msgEl.textContent = text || "";
-    msgEl.className = isError ? "msg error" : "msg";
-  }
-
-  // 1) Load wrestlers once
-  setMsg("Loading wrestlers…");
-  let rows = [];
   try {
-    rows = await queryView(
-      "v_wrestlers_by_weight_class",
-      {},
-      { column: "wrestler_name", ascending: true }
-    );
-  } catch (err) {
-    console.error(err);
-    setMsg("Unable to load wrestlers.", true);
-    return;
-  }
-
-  // 2) Group by weight_lbs
-  const byWeight = new Map();
-  for (const w of WEIGHTS) byWeight.set(w, []);
-  for (const r of rows) {
-    if (!byWeight.has(r.weight_lbs)) continue;
-    byWeight.get(r.weight_lbs).push(r);
-  }
-
-  // 3) Render 10 dropdowns
-  weightsWrap.innerHTML = WEIGHTS.map((w) => {
-    const opts = (byWeight.get(w) || []).map((r) => {
-      const label = r.college_team
-        ? `${r.wrestler_name} (${r.college_team})`
-        : r.wrestler_name;
-      return `<option value="${r.wrestler_guid}">${escapeHtml(label)}</option>`;
-    }).join("");
-
-    return `
-      <div class="row">
-        <label class="label">${w} lbs</label>
-        <select class="select" id="w_${w}">
-          <option value="">-- Select wrestler --</option>
-          ${opts}
-        </select>
-      </div>
-    `;
-  }).join("");
-
-  setMsg("");
-
-  function readPayload() {
-    const teamName = (teamNameEl.value || "").trim();
-    if (teamName.length < 2) throw new Error("Team name is required (min 2 chars).");
-
-    const picks = {};
-    for (const w of WEIGHTS) {
-      const sel = document.getElementById(`w_${w}`);
-      const val = sel ? sel.value : "";
-      if (!val) throw new Error(`Please select a wrestler for ${w} lbs.`);
-      picks[w] = val;
+    const user = await A.requireUser(root);
+    if (!user) return;
+    const [league, options] = await Promise.all([
+      callRpc("bl_manage_league", { p_league_guid: leagueGuid }),
+      callRpc("bl_event_roster_options", { p_league_guid: leagueGuid })
+    ]);
+    if (!league || !options) throw new Error("This league is not available to this account.");
+    if (draft.user_id !== user.id) draft = {};
+    const manageLink = buildRepoLink("my_leagues/index.html", { league: leagueGuid });
+    const weights = (options.weights || []).map(Number).filter(Number.isFinite);
+    const wrestlers = options.wrestlers || [];
+    const byWeight = new Map(weights.map(weight => [weight, wrestlers.filter(wrestler => Number(wrestler.weight_lbs) === weight)]));
+    const entriesReady = weights.length > 0 && weights.every(weight => byWeight.get(weight).length > 0);
+    if (!options.roster_open || !entriesReady) {
+      root.innerHTML = `<section class="form-card account-card"><h2>${A.escape(league.league_name)}</h2>
+        <p class="account-meta">${A.escape(A.eventLabel(league.event_name, league.year))}</p>
+        <p>${entriesReady ? "Roster submissions are not currently open for this event." : "The tournament field is not ready for team selection yet. Your league is saved; return here when the entries are published."}</p>
+        <p>${A.escape(A.dateLabel(league.roster_lock_at))}</p>
+        <a class="btn" href="${A.escape(manageLink)}">Back to league</a></section>`;
+      return;
     }
+    root.innerHTML = `<section class="form-card account-card"><h2>${A.escape(league.league_name)}</h2>
+      <p class="account-meta">${A.escape(A.eventLabel(league.event_name, league.year))}</p>
+      <p>${A.escape(A.dateLabel(league.roster_lock_at))}</p>
+      <form id="team-form">
+        <label class="label" for="team-name">Team name</label>
+        <input class="input" type="text" id="team-name" name="team_name" minlength="2" maxlength="100" required placeholder="e.g., The Mat Monsters" />
+        <div class="roster-grid">${weights.map(weight => `<div class="row">
+          <label class="label" for="weight-${weight}">${weight} lbs</label>
+          <select class="select" id="weight-${weight}" name="weight_${weight}" required>
+            <option value="">Choose a wrestler</option>
+            ${byWeight.get(weight).map(wrestler => `<option value="${A.escape(wrestler.wrestler_guid)}">${A.escape(wrestler.wrestler_name)}${wrestler.college_team ? ` (${A.escape(wrestler.college_team)})` : ""}${wrestler.seed ? ` · Seed ${A.escape(wrestler.seed)}` : ""}</option>`).join("")}
+          </select></div>`).join("")}</div>
+        <div class="actions"><button class="btn primary" type="submit" value="done">Save team</button>
+          <button class="btn" type="submit" value="another">Save and add another</button>
+          <a class="btn" href="${A.escape(manageLink)}">Back to league</a></div>
+        <p id="team-message" class="msg" role="status" aria-live="polite"></p>
+      </form>
+    </section>`;
+    const form = document.getElementById("team-form");
+    const nameInput = document.getElementById("team-name");
+    const message = document.getElementById("team-message");
+    nameInput.value = draft.team_name || "";
+    for (const weight of weights) document.getElementById(`weight-${weight}`).value = draft.picks?.[weight] || "";
 
-    // Active year is controlled by operational.v_active_year (config) inside the RPC
-    return {
-      p_league_name: leagueName,
-      p_team_name: teamName,
+    function persist() {
+      draft.user_id = user.id;
+      draft.team_name = nameInput.value;
+      draft.picks = Object.fromEntries(weights.map(weight => [weight, document.getElementById(`weight-${weight}`).value]));
+      try { sessionStorage.setItem(draftKey, JSON.stringify(draft)); } catch (_) { /* optional */ }
+    }
+    form.addEventListener("input", persist);
+    form.addEventListener("change", persist);
 
-      p_w_125: picks[125],
-      p_w_133: picks[133],
-      p_w_141: picks[141],
-      p_w_149: picks[149],
-      p_w_157: picks[157],
-      p_w_165: picks[165],
-      p_w_174: picks[174],
-      p_w_184: picks[184],
-      p_w_197: picks[197],
-      p_w_285: picks[285],
-    };
-  }
-
-  async function submitTeam(closeAfter) {
-    setMsg("");
-    addAnotherBtn.disabled = true;
-    doneBtn.disabled = true;
-
-    try {
-      const payload = readPayload();
-
-      const stgId = await callRpc("submit_fantasy_team", payload);
-
-      if (closeAfter) {
-        setMsg(`Saved (stg_id=${stgId}). Closing…`);
-        try { window.close(); } catch (e) {}
-        setTimeout(() => {
-          root.innerHTML = `<p>Saved (stg_id=${stgId}). You can close this window.</p>`;
-        }, 500);
-      } else {
-        setMsg(`Saved (stg_id=${stgId}). Add the next team.`);
-        teamNameEl.value = "";
-        for (const w of WEIGHTS) {
-          const sel = document.getElementById(`w_${w}`);
-          if (sel) sel.value = "";
+    form.addEventListener("submit", async event => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+      const name = nameInput.value.trim();
+      const picks = weights.map(weight => ({ weight_lbs: weight, wrestler_guid: document.getElementById(`weight-${weight}`).value }));
+      const buttons = Array.from(form.querySelectorAll('button[type="submit"]'));
+      buttons.forEach(button => { button.disabled = true; });
+      A.setMessage(message, "Saving your team…");
+      try {
+        if (name.length < 2) throw new Error("Enter a team name with at least 2 characters.");
+        if (new Set(picks.map(pick => pick.wrestler_guid)).size !== weights.length) throw new Error("Choose a different wrestler for every weight class.");
+        const payloadKey = JSON.stringify([name, picks]);
+        if (draft.payload_key !== payloadKey || !draft.request_id) {
+          draft.payload_key = payloadKey;
+          draft.request_id = A.requestId();
         }
-        teamNameEl.focus();
-      }
-    } catch (err) {
-      console.error(err);
-      setMsg(err?.message || "Submit failed.", true);
-    } finally {
-      addAnotherBtn.disabled = false;
-      doneBtn.disabled = false;
-    }
+        persist();
+        const teamGuid = await callRpc("bl_save_team", {
+          p_league_guid: leagueGuid, p_team_name: name, p_picks: picks, p_request_id: draft.request_id
+        });
+        if (!teamGuid) throw new Error("No save confirmation was returned. Please retry.");
+        try { sessionStorage.removeItem(draftKey); } catch (_) { /* optional */ }
+        draft = {};
+        if (event.submitter?.value === "another") {
+          form.reset(); nameInput.focus();
+          A.setMessage(message, `${name} has been saved. Add your next team.`);
+        } else location.assign(manageLink);
+      } catch (error) {
+        A.setMessage(message, A.errorMessage(error), true);
+        if (/JWT|token|session|sign in|authenticated/i.test(String(error?.message))) {
+          const signIn = document.createElement("a");
+          signIn.href = A.accountLink(); signIn.textContent = "Sign in again"; signIn.className = "btn";
+          message.append(document.createTextNode(" "), signIn);
+        }
+      } finally { buttons.forEach(button => { button.disabled = false; }); }
+    });
+  } catch (error) {
+    root.innerHTML = `<section class="panel"><h2>Unable to load team setup</h2><p class="account-error">${A.escape(A.errorMessage(error))}</p>
+      <a class="btn" href="${A.escape(buildRepoLink("my_leagues/index.html"))}">My Leagues</a></section>`;
   }
-
-  addAnotherBtn.addEventListener("click", () => submitTeam(false));
-  doneBtn.addEventListener("click", () => submitTeam(true));
 })();

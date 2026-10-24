@@ -76,7 +76,7 @@ function renderLeagueTable(rows) {
         id="league-search"
         class="input"
         type="text"
-        placeholder="Search by league name or year"
+        placeholder="Search by league, tournament or year"
         autocomplete="off"
       />
       <p id="league-count" class="helper-text"></p>
@@ -139,7 +139,8 @@ function renderLeagueTable(rows) {
       const filtered = normalizedRows.filter(function (row) {
         return (
           row.league_name.toLowerCase().includes(needle) ||
-          row.year_text.toLowerCase().includes(needle)
+          row.year_text.toLowerCase().includes(needle) ||
+          row.event_name.toLowerCase().includes(needle)
         );
       });
 
@@ -156,6 +157,7 @@ function normalizeLeagueRow(r) {
   return {
     league_guid: String(leagueGuid),
     league_name: String(leagueName),
+    event_name: String(r.event_name || ""),
     year: year,
     year_text: year == null ? "" : String(year),
     href: leagueGuid
@@ -167,7 +169,7 @@ function normalizeLeagueRow(r) {
 function renderLeagueRow(row) {
   return (
     "<tr>" +
-      "<td>" + safeText(row.league_name) + "</td>" +
+      "<td>" + safeText(row.league_name) + (row.event_name && !row.event_name.startsWith("Historical tournament") ? "<div class=\"helper-text\">" + safeText(row.event_name) + "</div>" : "") + "</td>" +
       "<td>" + safeText(row.year_text) + "</td>" +
       '<td><a class="btn-link" href="' + row.href + '">View scoreboard</a></td>' +
     "</tr>"

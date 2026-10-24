@@ -50,6 +50,7 @@
 
     renderLeaders(rows);
   } catch (err) {
+    if (renderPublicAccessMessage(root, err)) return;
     console.error("Leaders page failed to load:", err);
     root.innerHTML = `
       <div class="page-header">

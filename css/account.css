@@ -1,0 +1,29 @@
+/* Account and league setup pages; follows the site's existing palette. */
+.account-card { margin: 0 auto 24px; }
+.account-card h2 { margin-bottom: 8px; }
+.account-card .actions { flex-wrap: wrap; align-items: center; }
+.account-card .btn { font: inherit; font-weight: 600; }
+.account-card .btn:disabled { opacity: .6; cursor: wait; transform: none; }
+.account-card .input, .account-card .select { min-height: 44px; font-size: 16px; }
+.account-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.account-tabs a { text-decoration: none; padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 6px; }
+.account-tabs a[aria-current="page"] { background: var(--accent-primary); color: white; border-color: var(--accent-primary); }
+.account-meta { color: var(--text-muted); font-size: 14px; }
+.account-note { padding: 12px 14px; background: var(--bg-input); border-left: 3px solid var(--accent-primary); border-radius: 4px; }
+.league-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 18px; }
+.league-card { display: flex; flex-direction: column; gap: 8px; }
+.league-card h2, .league-card p { margin: 0; }
+.league-card .actions { margin-top: auto; padding-top: 12px; flex-wrap: wrap; }
+.league-status { display: inline-block; align-self: flex-start; padding: 3px 10px; border-radius: 20px; font-size: 13px; background: #f1ece0; color: #66532a; }
+.league-status.paid { background: #e7efe8; color: #36543b; }
+.account-toolbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; }
+.account-toolbar p { margin: 0; }
+.account-toolbar .actions { margin: 0; flex-wrap: wrap; }
+.roster-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 0 20px; }
+.roster-list { padding-left: 20px; margin: 8px 0; }
+.account-error { color: var(--danger); }
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+@media (max-width: 600px) {
+  .account-card { padding: 18px; }
+  .account-card .actions > .btn { flex: 1 1 auto; text-align: center; }
+}

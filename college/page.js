@@ -17,7 +17,7 @@
 
   root.innerHTML = `
     <div class="page-header">
-      <h2 class="page-title">NCAA Team Scoreboard</h2>
+      <h2 class="page-title">College Team Scoreboard</h2>
       <p class="page-subtitle">Current college standings by total tournament points.</p>
     </div>
 
@@ -31,18 +31,19 @@
   `;
 
   try {
-    const rows = await queryView(
-      "v_college_scoreboard",
-      {},
-      { column: "total_points", ascending: false }
-    );
+    const selection = await getPublicEventSelection();
+    const rows = selection.selected
+      ? await callRpc("bl_college_scores", { p_event_guid: selection.selected.event_guid })
+      : [];
+    rows.sort((a, b) => Number(b.total_points) - Number(a.total_points));
 
     renderCollegeStandings(rows);
+    renderPublicEventSelector(root, selection);
   } catch (err) {
     console.error("College standings failed to load:", err);
     root.innerHTML = `
       <div class="page-header">
-        <h2 class="page-title">NCAA Team Scoreboard</h2>
+        <h2 class="page-title">College Team Scoreboard</h2>
         <p class="page-subtitle">Current college standings by total tournament points.</p>
       </div>
 
@@ -60,12 +61,12 @@ function renderCollegeStandings(rows) {
   if (!rows || rows.length === 0) {
     root.innerHTML = `
       <div class="page-header">
-        <h2 class="page-title">NCAA Team Scoreboard</h2>
+        <h2 class="page-title">College Team Scoreboard</h2>
         <p class="page-subtitle">Current college standings by total tournament points.</p>
       </div>
 
       <div class="panel">
-        <p>No college standings are available yet. Once active-season match results are loaded, NCAA team scores will appear here.</p>
+        <p>No college standings are available for this tournament yet.</p>
       </div>
     `;
     return;
@@ -73,7 +74,7 @@ function renderCollegeStandings(rows) {
 
   root.innerHTML = `
     <div class="page-header">
-      <h2 class="page-title">NCAA Team Scoreboard</h2>
+      <h2 class="page-title">College Team Scoreboard</h2>
       <p class="page-subtitle">Current college standings by total tournament points.</p>
     </div>
 
