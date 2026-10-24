@@ -43,6 +43,7 @@
 
     renderScoreboard(rows, leagueGuid);
   } catch (err) {
+    if (renderPublicAccessMessage(root, err)) return;
     console.error("Scoreboard page failed to load:", err);
     root.innerHTML = `
       <div class="page-header">
