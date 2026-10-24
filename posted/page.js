@@ -20,7 +20,7 @@
   root.innerHTML = `
     <div class="page-header">
       <h2 class="page-title">Posted Tournament Matches</h2>
-      <p class="page-subtitle">Recently posted match results for the current tournament year.</p>
+      <p class="page-subtitle">Match results for the selected tournament.</p>
     </div>
 
     <div class="panel">
@@ -33,28 +33,23 @@
   `;
 
   try {
-    // Optional filters
+    const selection = await getPublicEventSelection();
+    let rows = selection.selected
+      ? await callRpc("bl_event_results", { p_event_guid: selection.selected.event_guid })
+      : [];
     const weight = getQueryParam("weight");
     const session = getQueryParam("session");
-
-    const filters = {};
-
-    // Enable these if your view supports the columns
-    // if (weight) filters.weight_lbs = Number(weight);
-    // if (session) filters.session_nbr = Number(session);
-
-    const rows = await queryView(
-      "v_posted_matches_current_year",
-      filters
-    );
+    if (weight) rows = rows.filter(row => Number(row.weight_lbs) === Number(weight));
+    if (session) rows = rows.filter(row => Number(row.session) === Number(session));
 
     renderPostedMatches(rows);
+    renderPublicEventSelector(root, selection);
   } catch (err) {
     console.error("Posted matches failed to load:", err);
     root.innerHTML = `
       <div class="page-header">
         <h2 class="page-title">Posted Tournament Matches</h2>
-        <p class="page-subtitle">Recently posted match results for the current tournament year.</p>
+        <p class="page-subtitle">Match results for the selected tournament.</p>
       </div>
 
       <div class="panel">
@@ -72,7 +67,7 @@ function renderPostedMatches(rows) {
     root.innerHTML = `
       <div class="page-header">
         <h2 class="page-title">Posted Tournament Matches</h2>
-        <p class="page-subtitle">Recently posted match results for the current tournament year.</p>
+        <p class="page-subtitle">Match results for the selected tournament.</p>
       </div>
 
       <div class="panel">
@@ -85,7 +80,7 @@ function renderPostedMatches(rows) {
   root.innerHTML = `
     <div class="page-header">
       <h2 class="page-title">Posted Tournament Matches</h2>
-      <p class="page-subtitle">Recently posted match results for the current tournament year.</p>
+      <p class="page-subtitle">Match results for the selected tournament.</p>
     </div>
 
     <div class="panel">
@@ -125,7 +120,7 @@ function renderPostedMatches(rows) {
 function wrestlerLink(wrestlerGuid, label) {
   if (!wrestlerGuid) return safeText(label);
 
-  return `<a href="${buildRepoLink(`wrestler/index.html?wrestler=${encodeURIComponent(wrestlerGuid)}`)}">${safeText(label)}</a>`;
+  return `<a href="${buildRepoLink(`wrestler/index.html?wrestler=${encodeURIComponent(wrestlerGuid)}&event=${encodeURIComponent(window.BLSelectedEvent?.event_guid || "")}`)}">${safeText(label)}</a>`;
 }
 
 function safeText(value) {
