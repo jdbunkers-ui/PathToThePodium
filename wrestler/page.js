@@ -23,9 +23,19 @@
   try {
     const wrestlerGuid = requireParam("wrestler");
 
+    const filters = { wrestler_guid: wrestlerGuid };
+    let eventGuid = getQueryParam("event");
+    const leagueGuid = getQueryParam("league");
+    if (leagueGuid) {
+      const context = await callRpc("bl_public_league", { p_league_guid: leagueGuid });
+      if (context?.found) eventGuid = context.event_guid;
+    }
+    if (eventGuid) filters.event_guid = eventGuid;
+    window.BLWrestlerEvent = eventGuid;
+
     const rows = await queryView(
       "v_wrestler_match_history",
-      { wrestler_guid: wrestlerGuid },
+      filters,
       { column: "match_number", ascending: true }
     );
 
@@ -98,29 +108,12 @@ function renderWrestlerHistory(rows) {
    Helpers
 ------------------------------------------------------------- */
 
-function getBasePath() {
-  const parts = window.location.pathname.split("/").filter(Boolean);
-  return parts.length ? `/${parts[0]}` : "";
-}
-
-function buildRepoLink(relativePath, params = {}) {
-  const basePath = getBasePath();
-  const url = new URL(`${basePath}/${relativePath}`, window.location.origin);
-
-  Object.entries(params).forEach(([key, value]) => {
-    if (value !== null && value !== undefined && value !== "") {
-      url.searchParams.set(key, value);
-    }
-  });
-
-  return `${url.pathname}${url.search}`;
-}
-
 function wrestlerLink(wrestlerGuid, label, league) {
   if (!wrestlerGuid) return safeText(label);
 
   return `<a href="${buildRepoLink("wrestler/index.html", {
     wrestler: wrestlerGuid,
+    event: window.BLWrestlerEvent,
     league
   })}">${safeText(label)}</a>`;
 }
