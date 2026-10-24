@@ -1,0 +1,305 @@
+/* =========================================================
+   Bracket Leaders 2027 — homepage-only launch presentation
+   Scope all styles to .home-2027 so other pages retain v5.1.0
+   ========================================================= */
+
+.home-2027 .launch-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(190px, 0.7fr);
+  overflow: hidden;
+  border: 1px solid #d8e0dd;
+  border-radius: 12px;
+  background: linear-gradient(112deg, #ffffff 0%, #f5f8f6 62%, #ecf2ee 100%);
+  box-shadow: var(--shadow-soft);
+  margin: 0 0 32px;
+}
+
+.home-2027 .launch-hero-copy {
+  padding: clamp(22px, 4.2vw, 42px);
+}
+
+.home-2027 .launch-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: #3f6b56;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin-bottom: 14px;
+}
+
+.home-2027 .launch-eyebrow::before {
+  content: "";
+  height: 7px;
+  width: 7px;
+  border-radius: 50%;
+  background: var(--accent-secondary);
+  box-shadow: 0 0 0 4px rgba(107, 142, 115, 0.13);
+}
+
+.home-2027 .launch-title {
+  font-size: clamp(32px, 4.3vw, 48px);
+  letter-spacing: -0.045em;
+  line-height: 1.10;
+  max-width: 670px;
+  margin-bottom: 14px;
+}
+
+.home-2027 .launch-title span {
+  color: var(--accent-primary);
+}
+
+.home-2027 .launch-hero-description {
+  color: #4f5d63;
+  max-width: 590px;
+  font-size: 16px;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.home-2027 .launch-hero-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 23px;
+}
+
+.home-2027 .launch-hero-actions .btn {
+  text-align: center;
+}
+
+.home-2027 .launch-cta-arrow {
+  display: inline-block;
+  margin-left: 6px;
+  font-size: 16px;
+  line-height: 1;
+  vertical-align: -1px;
+}
+
+.home-2027 .launch-hero-footnote {
+  margin: 16px 0 0;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.home-2027 .launch-hero-aside {
+  background: linear-gradient(155deg, #5d7882 0%, #375761 100%);
+  color: #f6f9f7;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 25px 20px;
+  position: relative;
+}
+
+.home-2027 .launch-hero-aside::after {
+  content: "";
+  position: absolute;
+  inset: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 7px;
+  pointer-events: none;
+}
+
+.home-2027 .launch-hero-year {
+  color: #ffffff;
+  font-size: clamp(76px, 9vw, 122px);
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.10em;
+  padding-right: 0.10em;
+}
+
+.home-2027 .launch-hero-aside-rule {
+  width: 44px;
+  height: 3px;
+  margin: 16px 0;
+  background: #d5e2d0;
+  border-radius: 4px;
+}
+
+.home-2027 .launch-hero-aside-caption {
+  color: #e3edeb;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.7;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.home-2027 .launch-section {
+  margin: 0 0 32px;
+}
+
+.home-2027 .launch-section-header {
+  margin-bottom: 15px;
+}
+
+.home-2027 .launch-section-kicker {
+  display: block;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  font-size: 10px;
+  color: var(--accent-secondary);
+}
+
+.home-2027 .launch-section-title {
+  font-size: clamp(23px, 2.8vw, 28px);
+  line-height: 1.25;
+  margin: 0 0 6px;
+}
+
+.home-2027 .launch-section-description {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.home-2027 .launch-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.home-2027 .launch-feature-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: var(--shadow-soft);
+  border-top: 3px solid #90a99c;
+}
+
+.home-2027 .launch-feature-no {
+  display: block;
+  color: #729184;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin: 0 0 10px;
+}
+
+.home-2027 .launch-feature-card h3 {
+  font-size: 16px;
+  margin: 0 0 7px;
+}
+
+.home-2027 .launch-feature-card p {
+  color: #59656b;
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.home-2027 .launch-tournament-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.home-2027 .launch-tournament-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 17px;
+  border: 1px solid var(--border-color);
+  background: #fff;
+  border-radius: 9px;
+  min-height: 116px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.035);
+}
+
+.home-2027 .launch-tournament-type {
+  color: #648379;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.home-2027 .launch-tournament-name {
+  color: var(--text-main);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.home-2027 .launch-availability-note {
+  margin: 13px 0 0;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.home-2027 .launch-leagues {
+  scroll-margin-top: 20px;
+}
+
+@media (max-width: 800px) {
+  .home-2027 .launch-hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .home-2027 .launch-hero-aside {
+    display: none;
+  }
+
+  .home-2027 .launch-feature-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .home-2027 .launch-tournament-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 540px) {
+  .home-2027 .launch-hero {
+    margin-bottom: 26px;
+  }
+
+  .home-2027 .launch-hero-copy {
+    padding: 22px 19px;
+  }
+
+  .home-2027 .launch-title {
+    font-size: 33px;
+  }
+
+  .home-2027 .launch-hero-description {
+    font-size: 14px;
+  }
+
+  .home-2027 .launch-hero-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .home-2027 .launch-feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home-2027 .launch-feature-card {
+    padding: 16px;
+  }
+
+  .home-2027 .launch-tournament-card {
+    min-height: 106px;
+    padding: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-2027 .launch-hero-actions .btn {
+    transition: none;
+  }
+}
