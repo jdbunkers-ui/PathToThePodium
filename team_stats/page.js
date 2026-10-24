@@ -42,6 +42,7 @@
 
     renderTeamStats(rows);
   } catch (err) {
+    if (renderPublicAccessMessage(root, err)) return;
     console.error("Team stats failed to load:", err);
     root.innerHTML = `
       <div class="page-header">
