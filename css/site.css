@@ -630,3 +630,13 @@ p {
     padding: 14px;
   }
 }
+
+/* Verified official-result notation: medical forfeits, injury defaults,
+   sudden victory, tiebreakers and criteria finishes (v5.1.2). */
+.bl-official-finish {
+  display: inline-block;
+  font-weight: 600;
+  line-height: 1.35;
+  white-space: nowrap;
+  color: var(--text-main);
+}

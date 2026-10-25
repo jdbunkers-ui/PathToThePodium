@@ -42,7 +42,8 @@
     if (weight) rows = rows.filter(row => Number(row.weight_lbs) === Number(weight));
     if (session) rows = rows.filter(row => Number(row.session) === Number(session));
 
-    renderPostedMatches(rows);
+    const details = await loadOfficialFinishes(selection.selected?.event_guid);
+    renderPostedMatches(rows, details);
     renderPublicEventSelector(root, selection);
   } catch (err) {
     console.error("Posted matches failed to load:", err);
@@ -59,7 +60,7 @@
   }
 })();
 
-function renderPostedMatches(rows) {
+function renderPostedMatches(rows, details = new Map()) {
   const root = document.getElementById("page-root");
   if (!root) return;
 
@@ -103,7 +104,7 @@ function renderPostedMatches(rows) {
                 <td>${wrestlerLink(r.red_wrestler_guid, r.red_wrestler_name || "—")}</td>
                 <td>${wrestlerLink(r.green_wrestler_guid, r.green_wrestler_name || "—")}</td>
                 <td>${wrestlerLink(r.winner_guid || r.winner_wrestler_guid, r.winner_name || "—")}</td>
-                <td>${safeText(r.result || "—")}</td>
+                <td>${formatOfficialFinish(details.get(Number(r.match_number)), r.result)}</td>
               </tr>
             `).join("")}
           </tbody>
@@ -127,4 +128,22 @@ function safeText(value) {
   const div = document.createElement("div");
   div.textContent = value ?? "";
   return div.innerHTML;
+}
+
+// v5.1.2: optional official-history enrichment; leaves old site usable
+// if the additive database migration has not been deployed yet.
+async function loadOfficialFinishes(eventGuid) {
+  if (!eventGuid) return new Map();
+  try {
+    const details = await callRpc('bl_public_match_official_details', { p_event_guid: eventGuid });
+    return new Map((details || []).map(d => [Number(d.match_number), d]));
+  } catch (error) {
+    console.warn('Official finish details unavailable; showing recorded results.', error);
+    return new Map();
+  }
+}
+
+function formatOfficialFinish(detail, recordedResult) {
+  if (!detail) return safeText(recordedResult || '—');
+  return `<span class="bl-official-finish">${safeText(detail.official_result_text)}</span>`;
 }
