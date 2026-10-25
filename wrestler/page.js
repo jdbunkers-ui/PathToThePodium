@@ -39,14 +39,15 @@
       { column: "match_number", ascending: true }
     );
 
-    renderWrestlerHistory(rows);
+    const officialFinishes = await loadWrestlerOfficialFinishes(rows);
+    renderWrestlerHistory(rows, officialFinishes);
   } catch (err) {
     console.error("Wrestler page failed to load:", err);
     root.innerHTML = `<p>Unable to load wrestler history.</p>`;
   }
 })();
 
-function renderWrestlerHistory(rows) {
+function renderWrestlerHistory(rows, officialFinishes = new Map()) {
   const root = document.getElementById("page-root");
   if (!root) return;
 
@@ -77,6 +78,7 @@ function renderWrestlerHistory(rows) {
             <th style="text-align:right;">Green</th>
             <th>Win Type</th>
             <th>End Type</th>
+            <th>Official Finish</th>
           </tr>
         </thead>
 
@@ -96,6 +98,7 @@ function renderWrestlerHistory(rows) {
               <td style="text-align:right;">${fmtScore(r.green_score)}</td>
               <td>${safeText(r.win_type || "—")}</td>
               <td>${safeText(r.end_type || "—")}</td>
+              <td>${renderOfficialWrestlerFinish(officialFinishes.get(r.match_guid))}</td>
             </tr>
           `).join("")}
         </tbody>
@@ -127,4 +130,24 @@ function safeText(value) {
   const div = document.createElement("div");
   div.textContent = value ?? "";
   return div.innerHTML;
+}
+
+// v5.1.2: only request detail for events present in this wrestler history.
+// Any failure falls back to the established win/end-type columns.
+async function loadWrestlerOfficialFinishes(rows) {
+  const eventGuids = [...new Set(rows.map(r => r.event_guid).filter(Boolean))];
+  const outputs = await Promise.all(eventGuids.map(async eventGuid => {
+    try {
+      return await callRpc('bl_public_match_official_details', { p_event_guid: eventGuid });
+    } catch (error) {
+      console.warn('Official match finishes unavailable for event', eventGuid, error);
+      return [];
+    }
+  }));
+  return new Map(outputs.flat().map(detail => [detail.match_guid, detail]));
+}
+
+function renderOfficialWrestlerFinish(detail) {
+  if (!detail) return '—';
+  return `<span class="bl-official-finish">${safeText(detail.official_result_text)}</span>`;
 }
