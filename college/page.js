@@ -19,6 +19,10 @@
     <div class="page-header">
       <h2 class="page-title">College Team Scoreboard</h2>
       <p class="page-subtitle">Current college standings by total tournament points.</p>
+      <p class="page-subtitle" style="margin-top:8px;">
+        <strong>Scoring note:</strong> Bracket Leaders team scores exclude team penalties and deductions,
+        so totals may differ from official tournament standings.
+      </p>
     </div>
 
     <div class="panel">
@@ -45,6 +49,10 @@
       <div class="page-header">
         <h2 class="page-title">College Team Scoreboard</h2>
         <p class="page-subtitle">Current college standings by total tournament points.</p>
+      <p class="page-subtitle" style="margin-top:8px;">
+        <strong>Scoring note:</strong> Bracket Leaders team scores exclude team penalties and deductions,
+        so totals may differ from official tournament standings.
+      </p>
       </div>
 
       <div class="panel">
@@ -63,6 +71,10 @@ function renderCollegeStandings(rows) {
       <div class="page-header">
         <h2 class="page-title">College Team Scoreboard</h2>
         <p class="page-subtitle">Current college standings by total tournament points.</p>
+      <p class="page-subtitle" style="margin-top:8px;">
+        <strong>Scoring note:</strong> Bracket Leaders team scores exclude team penalties and deductions,
+        so totals may differ from official tournament standings.
+      </p>
       </div>
 
       <div class="panel">
@@ -76,6 +88,10 @@ function renderCollegeStandings(rows) {
     <div class="page-header">
       <h2 class="page-title">College Team Scoreboard</h2>
       <p class="page-subtitle">Current college standings by total tournament points.</p>
+      <p class="page-subtitle" style="margin-top:8px;">
+        <strong>Scoring note:</strong> Bracket Leaders team scores exclude team penalties and deductions,
+        so totals may differ from official tournament standings.
+      </p>
     </div>
 
     <div class="panel">
