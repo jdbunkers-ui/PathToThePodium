@@ -46,43 +46,26 @@
         <section class="content-card">
           <h2>How the fantasy leagues work</h2>
           <p>
-            Honey Barrel Hunter lets wrestling fans create leagues, draft wrestlers, and compete
-            against friends based on real wrestling results throughout the season.
+            Bracket Leaders lets college wrestling fans compete in fantasy leagues scored using real
+            tournament results. Each team earns points based on its drafted wrestlers' performances.
           </p>
           <p>
-            Commissioners create a league, league members join in, and teams score points as real
-            match outcomes and tournament results come in. The goal is to build the strongest roster
-            and outscore the rest of the league.
+            Leagues conduct their drafts independently. Commissioners manage league setup and team
+            roster submissions, while participants can follow results and standings without an account
+            once league scoring is available.
           </p>
         </section>
 
         <section class="content-card">
           <h2>How to create a league</h2>
           <p>
-            Creating a league is simple. Go to the league creation page, enter your league details,
-            and share the league with your friends. Once your members are in, you can run your draft
-            and start following the standings.
-          </p>
-        </section>
-
-        <section class="content-card">
-          <h2>League payment for 2026</h2>
-          <p>
-            For the 2026 season, participation is donation only. There is no required fee to play.
+            Hold your league's wrestler draft independently, outside Bracket Leaders.
+            Bracket Leaders does not host or conduct drafts.
           </p>
           <p>
-            If you enjoy the site and want to support future development, updates, and hosting, you
-            can contribute through Venmo.
-          </p>
-          <p>
-            <a
-              class="btn primary"
-              href="https://venmo.com/HoneyBarrelHunter"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Support Honey Barrel Hunter on Venmo
-            </a>
+            The commissioner must create a Bracket Leaders account, set up the league, and submit
+            each team's finalized wrestler roster for processing once roster entry opens.
+            Individual league participants do not need an account to view league results and standings.
           </p>
         </section>
 
