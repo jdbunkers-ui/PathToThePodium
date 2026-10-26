@@ -3,36 +3,57 @@
 <head>
   <meta charset="utf-8" />
 
-  <!-- Mobile-first scaling -->
+  <!-- 
+    Mobile-first layout support.
+    Ensures proper scaling on phones and tablets.
+  -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>Fantasy Team</title>
+  <title>Scoreboard</title>
 
-  <!-- Global PTTP stylesheet -->
-  <link rel="stylesheet" href="../css/site.css?v=5.1.0" />
+  <!--
+    Global stylesheet shared across all PTTP pages.
+    Future UI polish will happen primarily inside site.css.
+  -->
+  <link rel="stylesheet" href="../css/site.css?v=5.1.7" />
 
-  <!-- GitHub Pages repo favicon -->
-  <link rel="icon" href="/BracketLeaders/favicon.ico">
+  <!--
+    Repo-relative favicon.
+    GitHub Pages requires the repo name in the path.
+  -->
+  <link rel="icon" href="../favicon.ico">
 </head>
 
 <body>
 
-  <!-- Navigation injected by /js/site-chrome.js -->
+  <!--
+    Navigation placeholder.
+
+    site-chrome.js dynamically injects the navigation
+    menu here so every page shares the same nav layout.
+  -->
   <div id="site-nav"></div>
 
   <main class="container">
 
-    <!-- Static page heading (dynamic roster renders below) -->
-    <h1>Fantasy Team Roster</h1>
+    <!--
+      Static page heading.
+      The actual scoreboard table will render below.
+    -->
+    <h1>Scoreboard</h1>
 
     <!--
       PRIMARY PAGE RENDER TARGET
 
-      /team/page.js will render the roster here.
-      Standardized across pages for consistent:
-        • loading states
-        • error rendering
-        • debugging
+      All dynamic content for this page is rendered here by:
+        /scoreboard/page.js
+
+      We standardize this container across all pages so that:
+
+      • requireParam() can render errors here
+      • loading states can render here
+      • page content rendering stays consistent
+      • debugging becomes easier
     -->
     <div id="page-root"></div>
 
@@ -44,28 +65,66 @@
   <!-- Shared Script Layer                                   -->
   <!-- ===================================================== -->
 
-  <!-- Utility helpers -->
-  <script src="../js/utils.js?v=5.1.0"></script>
+  <!--
+    Shared utility helpers.
 
-  <!-- Navigation chrome renderer -->
-  <script src="../js/site-chrome.js?v=5.1.0"></script>
+    Provides:
+      getQueryParam()
+      requireParam()
+      navigateWithLeague()
+      buildLeagueLink()
+  -->
+  <script src="../js/utils.js?v=5.1.7"></script>
+
+  <!--
+    Shared site chrome.
+
+    Responsible for:
+      • navigation bar rendering
+      • layout helpers
+      • global page behavior
+  -->
+  <script src="../js/site-chrome.js?v=5.1.7"></script>
+
 
   <!-- ===================================================== -->
   <!-- Data Layer                                            -->
   <!-- ===================================================== -->
 
-  <!-- Supabase client library -->
+  <!--
+    Supabase client library.
+
+    Must load BEFORE api.js so that:
+      window.supabase.createClient()
+    is available.
+  -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <!-- PTTP API wrapper (queryView helper) -->
-  <script src="../js/api.js?v=5.1.0"></script>
+  <!--
+    PTTP API layer.
+
+    Provides:
+      queryView(viewName, filters, orderBy)
+
+    This is the ONLY place that communicates
+    with the Supabase database.
+  -->
+  <script src="../js/api.js?v=5.1.7"></script>
+
 
   <!-- ===================================================== -->
-  <!-- Page Controller                                       -->
+  <!-- Page Logic                                            -->
   <!-- ===================================================== -->
 
-  <!-- Page-specific logic -->
-  <script src="./page.js?v=5.1.0"></script>
+  <!--
+    Page-specific controller.
+
+    Responsibilities:
+      • read URL parameters
+      • call queryView()
+      • render scoreboard UI
+  -->
+  <script src="./page.js?v=5.1.7"></script>
 
 </body>
 </html>
