@@ -83,7 +83,7 @@
         <p id="account-message" class="msg" role="status" aria-live="polite"></p>
       </form>
       <p class="helper-text">Waiting for a confirmation email? <a href="${A.escape(link("resend"))}">Send a new confirmation link</a>.</p>
-      <p class="helper-text">You can <a href="${A.escape(buildRepoLink("index.html"))}">browse public leagues and paid-league scoreboards</a> without signing in.</p>
+      <p class="helper-text">You can <a href="${A.escape(buildRepoLink("index.html"))}">browse public leagues and fantasy scoreboards</a> without signing in.</p>
     </section>`;
     bindForm(async (form) => {
       const { data, error } = await db.auth.signInWithPassword({ email: form.email.value.trim(), password: form.password.value });
@@ -100,7 +100,7 @@
 
   function showRegister() {
     root.innerHTML = `<section class="form-card account-card">${tabs()}
-      <h2>Create your account</h2><p>Your account and league setup are free. Each league’s scoring unlocks after payment.</p>
+      <h2>Create your account</h2><p>Your account, league setup, and fantasy scoring are free. No credit card is required.</p>
       <form id="account-form">
         ${formField("display_name", "Name (optional)", "text", "name", 'maxlength="100"')}
         ${formField("email", "Email address", "email", "username", 'required maxlength="254"')}
