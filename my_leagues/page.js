@@ -4,8 +4,8 @@
   const A = window.BLAuth;
   const leagueGuid = new URLSearchParams(location.search).get("league");
 
-  function paymentStatus(paid) {
-    return `<span class="league-status ${paid ? "paid" : ""}">${paid ? "Paid · scoring unlocked" : "Unpaid · scoring locked"}</span>`;
+  function scoringStatus(enabled) {
+    return `<span class="league-status ${enabled ? "paid" : ""}">${enabled ? "Fantasy scoring enabled" : "Scoring not enabled for this existing league"}</span>`;
   }
 
   function toolbar(user) {
@@ -22,13 +22,13 @@
       if (!league) throw new Error("This league is not available to this account.");
       const teams = league.teams || [];
       root.innerHTML = `${toolbar(user)}
-        ${new URLSearchParams(location.search).get("created") === "1" ? '<p class="account-note" role="status">Your league has been created. You can start preparing your teams.</p>' : ""}
+        ${new URLSearchParams(location.search).get("created") === "1" ? (league.paid_ind ? '<p class="account-note" role="status">Your league has been created with free fantasy scoring enabled. You can start preparing your teams.</p>' : '<p class="account-note" role="status">Your league was created, but scoring is not enabled. Contact Bracket Leaders before sharing a scoreboard.</p>') : ""}
         <section class="panel league-card">
           <h2>${A.escape(league.league_name)}</h2>
           <p class="account-meta">${A.escape(A.eventLabel(league.event_name, league.year))}</p>
-          ${paymentStatus(league.paid_ind)}
+          ${scoringStatus(league.paid_ind)}
           <p>${A.escape(A.dateLabel(league.roster_lock_at))}</p>
-          ${league.paid_ind ? '<p>Anyone with the scoreboard link can view this league without signing in.</p>' : '<p>League setup is available. Fantasy scores will appear after payment is recorded. Online payment collection is coming later.</p>'}
+          ${league.paid_ind ? '<p>Anyone with the scoreboard link can view this league without signing in.</p>' : '<p>Public scoring is not enabled for this existing league. The free-scoring update does not change access for leagues created earlier. Contact Bracket Leaders if you would like this reviewed.</p>'}
           <div class="actions">
             ${league.roster_open ? `<a class="btn primary" href="${A.escape(buildRepoLink("add_team/index.html", { league: leagueGuid }))}">Add team</a>` : '<span class="account-meta">Roster submissions are not currently open.</span>'}
             ${league.paid_ind ? `<a class="btn" href="${A.escape(buildRepoLink("scoreboard/index.html", { league: leagueGuid }))}">Public scoreboard</a>` : ""}
@@ -46,10 +46,10 @@
 
     const leagues = await callRpc("bl_my_leagues");
     root.innerHTML = `${toolbar(user)}
-      <p class="account-meta">Your leagues appear here as soon as you create them. Historical leagues are assigned to owners by the site administrator.</p>
+      <p class="account-meta">New commissioner leagues include fantasy scoring at no charge. Existing leagues retain their previous scoring-access settings. Historical leagues are assigned to owners by the site administrator.</p>
       ${(leagues || []).length ? `<div class="league-grid">${leagues.map(league => `<article class="panel league-card">
         <h2>${A.escape(league.league_name)}</h2><p class="account-meta">${A.escape(A.eventLabel(league.event_name, league.year))}</p>
-        ${paymentStatus(league.paid_ind)}<p>${A.escape(league.team_count ?? 0)} teams</p>
+        ${scoringStatus(league.paid_ind)}<p>${A.escape(league.team_count ?? 0)} teams</p>
         <div class="actions"><a class="btn primary" href="${A.escape(buildRepoLink("my_leagues/index.html", { league: league.fantasy_league_guid }))}">Manage league</a>
           ${league.paid_ind ? `<a class="btn" href="${A.escape(buildRepoLink("scoreboard/index.html", { league: league.fantasy_league_guid }))}">Public scoreboard</a>` : ""}</div>
       </article>`).join("")}</div>` : '<section class="panel"><h2>Your first league starts here</h2><p>Create a league for an upcoming tournament, then prepare your teams.</p></section>'}`;
