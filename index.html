@@ -10,7 +10,7 @@
 
   <meta
     name="description"
-    content="Bracket Leaders is a college wrestling fantasy league site for NCAA fans. Browse fantasy leagues, track your team, follow scoreboards, and stay connected to college wrestling results all season."
+    content="Free NCAA college wrestling fantasy league scoring. One commissioner sets up the league and uploads rosters; everyone can follow shareable tournament standings without an account or credit card."
   />
 
   <meta
@@ -21,40 +21,36 @@
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
   <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
 
-  <!-- IMPORTANT:
-       Replace this with your real production URL when you deploy.
-       If you stay on GitHub Pages, use that exact public URL here.
-  -->
-  <link rel="canonical" href="https://example.com/" />
+  <link rel="canonical" href="https://bracketleaders.com/" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Bracket Leaders | College Wrestling Fantasy Leagues, NCAA Scoreboards & Team Tracking" />
   <meta
     property="og:description"
-    content="A fantasy wrestling site for college wrestling fans. Browse leagues, track your fantasy team, and follow NCAA wrestling scoreboards and standings."
+    content="Free fantasy wrestling league scoring for NCAA tournaments. Draft with your friends, upload rosters, and share standings with anyone. No credit card required."
   />
-  <meta property="og:url" content="https://example.com/" />
+  <meta property="og:url" content="https://bracketleaders.com/" />
   <meta property="og:site_name" content="Bracket Leaders" />
 
   <!-- Optional: replace with a real preview image later -->
-  <!-- <meta property="og:image" content="https://example.com/path-to-preview-image.jpg" /> -->
+  <!-- <meta property="og:image" content="https://bracketleaders.com/path-to-preview-image.jpg" /> -->
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Bracket Leaders | College Wrestling Fantasy Leagues, NCAA Scoreboards & Team Tracking" />
   <meta
     name="twitter:description"
-    content="Browse fantasy wrestling leagues, track your team, and follow NCAA wrestling scoreboards and standings."
+    content="Run your own college wrestling fantasy league for free. One commissioner manages rosters; everyone can view public standings without an account."
   />
 
   <!-- Global site styling -->
-  <link rel="stylesheet" href="./css/site.css?v=5.1.0" />
+  <link rel="stylesheet" href="./css/site.css?v=5.1.7" />
   <!-- Homepage-only 2027 announcement styles -->
-  <link rel="stylesheet" href="./css/home-2027.css?v=5.1.1" />
+  <link rel="stylesheet" href="./css/home-2027.css?v=5.1.7" />
 
-  <!-- Repo-relative favicon for GitHub Pages -->
-  <link rel="icon" href="/BracketLeaders/favicon.ico" />
+  <!-- Canonical-domain favicon -->
+  <link rel="icon" href="./favicon.ico" />
 
   <!-- Structured data: WebSite -->
   <script type="application/ld+json">
@@ -62,8 +58,8 @@
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "Bracket Leaders",
-    "url": "https://example.com/",
-    "description": "A college wrestling fantasy league site focused on NCAA wrestling, league scoreboards, fantasy team tracking, and season-long competition."
+    "url": "https://bracketleaders.com/",
+    "description": "Free fantasy league roster tracking and NCAA wrestling tournament scoring. One commissioner sets up the league; results are publicly shareable without participant accounts."
   }
   </script>
 
@@ -73,8 +69,8 @@
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     "name": "Bracket Leaders Leagues",
-    "url": "https://example.com/",
-    "description": "Browse college wrestling fantasy leagues, follow NCAA wrestling scoreboards, and track your fantasy wrestling team throughout the season.",
+    "url": "https://bracketleaders.com/",
+    "description": "View historical fantasy wrestling leagues from 2025 onward and follow free, shareable NCAA tournament fantasy standings.",
     "about": [
       {
         "@type": "Thing",
@@ -99,25 +95,41 @@
   <div id="site-nav"></div>
 
   <main class="container home-2027">
-    <!-- 2027 season launch: account features and tournament expansion -->
+    <!-- 2027 fantasy scoring message. Drafts are conducted independently, not on this site. -->
     <section class="launch-hero" aria-labelledby="launch-title">
-      <div class="launch-hero-copy">
-        <span class="launch-eyebrow">New for the 2027 season</span>
-        <h1 class="launch-title" id="launch-title">Bracket Leaders 2027.<br><span>A bigger way to compete.</span></h1>
-        <p class="launch-hero-description">
-          Your fantasy wrestling headquarters just got bigger. Create a commissioner account,
-          run multiple leagues, and get ready for more conference and national championships.
-        </p>
-        <div class="launch-hero-actions">
-          <a class="btn primary" href="./new_league/index.html">Create a League <span class="launch-cta-arrow" aria-hidden="true">&rarr;</span></a>
-          <a class="btn" href="#tournaments-2027">Explore 2027 Tournaments</a>
-        </div>
-        <p class="launch-hero-footnote">Just here for the results? Public league scoreboards remain open to everyone.</p>
+      <div class="launch-free-banner" role="note" aria-label="Free league scoring with no credit card and no participant signups">
+        <span class="launch-free-lead">100% FREE</span>
+        <span class="launch-free-divider" aria-hidden="true"></span>
+        <span>NO CREDIT CARD</span>
+        <span class="launch-free-divider" aria-hidden="true"></span>
+        <span>NO PARTICIPANT SIGN-UPS</span>
       </div>
-      <div class="launch-hero-aside" aria-hidden="true">
-        <div class="launch-hero-year">2027</div>
-        <div class="launch-hero-aside-rule"></div>
-        <p class="launch-hero-aside-caption">More tournaments<br>More bragging rights</p>
+      <div class="launch-hero-body">
+        <div class="launch-hero-copy">
+          <span class="launch-eyebrow">NCAA wrestling fantasy leagues · 2027</span>
+          <h1 class="launch-title" id="launch-title">Your league. Your draft.<br><span>We track the points.</span></h1>
+          <p class="launch-hero-description">
+            A free home for your college wrestling fantasy league when the big tournaments roll around.
+            Draft wrestlers with your friends, have one commissioner create the league and upload your rosters,
+            and let Bracket Leaders turn real tournament results into shareable fantasy standings.
+          </p>
+          <div class="launch-benefits" aria-label="Why choose Bracket Leaders">
+            <span>One commissioner account</span>
+            <span>Automatic fantasy scoring as results are processed</span>
+            <span>Public, shareable standings</span>
+          </div>
+          <div class="launch-hero-actions">
+            <a class="btn primary" href="./new_league/index.html">Create Your Free League <span class="launch-cta-arrow" aria-hidden="true">&rarr;</span></a>
+            <a class="btn" href="#leagues">Browse Past Leagues</a>
+          </div>
+          <p class="launch-hero-footnote">Commissioners register to manage rosters. Friends and spectators can view results without signing up.</p>
+          <p class="launch-hero-footnote">Planning your March draft? <a href="./2027-ncaa-wrestling-fantasy/">Read the 2027 NCAA fantasy league guide &rarr;</a></p>
+        </div>
+        <div class="launch-hero-aside" aria-hidden="true">
+          <div class="launch-hero-year">2027</div>
+          <div class="launch-hero-aside-rule"></div>
+          <p class="launch-hero-aside-caption">Your rivals draft<br>We do the math</p>
+        </div>
       </div>
     </section>
 
@@ -125,23 +137,23 @@
       <div class="launch-section-header">
         <span class="launch-section-kicker">Built for commissioners</span>
         <h2 class="launch-section-title" id="launch-whats-new-title">What's New in 2027</h2>
-        <p class="launch-section-description">More control for the people who make fantasy wrestling happen.</p>
+        <p class="launch-section-description">Everything a commissioner needs. No credit card, fees, or participant logins.</p>
       </div>
       <div class="launch-feature-grid">
         <article class="launch-feature-card">
           <span class="launch-feature-no">01 / ACCOUNTS</span>
-          <h3>Your Own Commissioner Account</h3>
-          <p>Sign up once, create your leagues, and return anytime to manage them.</p>
+          <h3>One Commissioner. Everyone Competes.</h3>
+          <p>Sign up once to create your leagues and upload rosters. Everyone else can follow standings without an account.</p>
         </article>
         <article class="launch-feature-card">
           <span class="launch-feature-no">02 / FLEXIBILITY</span>
-          <h3>One Account. Multiple Leagues.</h3>
-          <p>Keep your office pools, friends-and-family leagues, and tournament picks together.</p>
+          <h3>Free, Shareable Scoreboards.</h3>
+          <p>No fee or credit card required. Send a results link to every friend in your league.</p>
         </article>
         <article class="launch-feature-card">
           <span class="launch-feature-no">03 / EXPANSION</span>
-          <h3>More Tournaments to Choose From</h3>
-          <p>Go beyond one championship with new conference, NCAA division, and women's events.</p>
+          <h3>More College Wrestling Tournaments.</h3>
+          <p>Follow fantasy action beyond one championship, with new conference and national events planned for 2027.</p>
         </article>
       </div>
     </section>
@@ -182,7 +194,16 @@
           <h3 class="launch-tournament-name">Women's National Championship</h3>
         </article>
       </div>
-      <p class="launch-availability-note">2027 leagues can be created now. Rosters and scoring open as tournament fields, deadlines, and payment options become available.</p>
+      <p class="launch-availability-note">Create your 2027 league now. Roster entry and scoring become available as tournament fields are finalized and processing opens. Bracket Leaders is free to use.</p>
+    </section>
+
+    <section class="launch-history" aria-labelledby="launch-history-title">
+      <div>
+        <span class="launch-section-kicker">See how fantasy leagues finish</span>
+        <h2 id="launch-history-title">Real rivalries. Results since 2025.</h2>
+        <p>Browse published fantasy standings, including the FloWrestling fantasy league and the LMCC league. The LMCC draft tradition dates back to 2018; Bracket Leaders' public results archive begins in 2025.</p>
+      </div>
+      <a class="btn" href="#leagues">Explore Historical Results <span aria-hidden="true">&rarr;</span></a>
     </section>
 
     <!-- Existing public league directory and scoreboard links remain unchanged -->
@@ -198,10 +219,10 @@
   <!-- ===================================================== -->
 
   <!-- Shared utilities (query params, link helpers, etc.) -->
-  <script src="./js/utils.js?v=5.1.0"></script>
+  <script src="./js/utils.js?v=5.1.7"></script>
 
   <!-- Shared navigation chrome -->
-  <script src="./js/site-chrome.js?v=5.1.0"></script>
+  <script src="./js/site-chrome.js?v=5.1.7"></script>
 
   <!-- ===================================================== -->
   <!-- Data Layer                                            -->
@@ -211,14 +232,14 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <!-- Your Supabase wrapper + queryView() helper -->
-  <script src="./js/api.js?v=5.1.0"></script>
+  <script src="./js/api.js?v=5.1.7"></script>
 
   <!-- ===================================================== -->
   <!-- Page Logic                                            -->
   <!-- ===================================================== -->
 
   <!-- Root landing page controller -->
-  <script src="./page.js?v=5.1.0"></script>
+  <script src="./page.js?v=5.1.7"></script>
 
 </body>
 </html>
