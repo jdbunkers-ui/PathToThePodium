@@ -19,7 +19,7 @@
     }
     if (draft.user_id !== user.id) draft = {};
     root.innerHTML = `<section class="form-card account-card">
-      <p>Choose a tournament and year, then name your league. You can prepare your teams before payment.</p>
+      <p>Choose a tournament and year, then name your league. New leagues include fantasy scoring at no charge. Once tournament rosters open, you can add your drafted teams. Existing league records are not changed by this policy.</p>
       <form id="create-league-form">
         <label class="label" for="event">Tournament and year</label>
         <select class="select" id="event" name="event" required>
@@ -29,7 +29,7 @@
         <p id="event-details" class="helper-text"></p>
         <label class="label" for="league-name">League name</label>
         <input class="input" id="league-name" name="league_name" type="text" minlength="3" maxlength="100" required placeholder="e.g., Jersey Mat Mafia" />
-        <p class="account-note">New leagues start unpaid. Fantasy scores and standings unlock after payment. Payment collection is not yet available on this site.</p>
+        <p class="account-note">League creation and fantasy scoring are free. No credit card required. Commissioners manage rosters; participants can follow public results without signing in.</p>
         <div class="actions"><button class="btn primary" id="create-button" type="submit">Create league</button>
           <a class="btn" href="${A.escape(buildRepoLink("my_leagues/index.html"))}">My Leagues</a></div>
         <p id="create-message" class="msg" role="status" aria-live="polite"></p>
