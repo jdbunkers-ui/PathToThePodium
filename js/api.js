@@ -28,7 +28,7 @@ const db = window.supabase.createClient(
 // ------------------------------------------------------------
 async function queryView(viewName, filters = {}, orderBy = null) {
   // Public access is intentional. This is a display/status check; the database
-  // independently blocks unpaid scores on every view and scoring RPC.
+  // checks whether scoring is enabled, regardless of free access.
   const leagueViews = new Set([
     "v_league_scoreboard", "v_league_scoreboard_backup", "v_team_points",
     "v_team_roster_points", "v_league_wrestler_leaders", "v_league_team_stats",
@@ -40,7 +40,7 @@ async function queryView(viewName, filters = {}, orderBy = null) {
       : await callRpc("bl_public_league", { p_league_guid: filters.fantasy_league_guid });
     if (!status?.found || !status.scoring_available) {
       const error = new Error(status?.found
-        ? "Scoring is locked until this league is paid."
+        ? "Scoring is not yet available for this league. Please contact the commissioner."
         : "This league or team could not be found.");
       error.code = status?.found ? "BL_SCORING_LOCKED" : "BL_NOT_FOUND";
       throw error;
@@ -75,7 +75,7 @@ function renderPublicAccessMessage(root, error) {
   const panel = document.createElement('section');
   panel.className = 'panel';
   const title = document.createElement('h2');
-  title.textContent = error.code === 'BL_SCORING_LOCKED' ? 'Scoring is locked' : 'League not found';
+  title.textContent = error.code === 'BL_SCORING_LOCKED' ? 'Scoring is unavailable' : 'League not found';
   const message = document.createElement('p');
   message.textContent = error.message;
   const link = document.createElement('a');

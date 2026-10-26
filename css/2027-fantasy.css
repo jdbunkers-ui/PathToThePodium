@@ -1,0 +1,71 @@
+/* Bracket Leaders 2027 NCAA fantasy campaign page - self-contained, prefixed styles. */
+.bl27-page { background:#f4f4f0; }
+.bl27-layout { max-width:1200px; padding:22px 26px 64px; margin:0 auto; }
+.bl27-layout h1,.bl27-layout h2,.bl27-layout h3 { letter-spacing:-.025em; }
+.bl27-layout a { text-underline-offset:3px; }
+.bl27-breadcrumb { display:flex; gap:10px; font-size:12px; font-weight:650; color:#77808a; margin:8px 0 18px; align-items:center; }
+.bl27-breadcrumb a { color:#556a75; text-decoration:none; }
+.bl27-breadcrumb a:hover { text-decoration:underline; }
+.bl27-hero { display:grid; grid-template-columns:minmax(0,1.7fr) minmax(270px,.86fr); overflow:hidden; border-radius:18px; background:#223b47; color:#fff; box-shadow:0 18px 45px rgba(20,44,54,.13); }
+.bl27-hero-copy { padding:clamp(30px,5vw,68px); position:relative; background:radial-gradient(circle at 90% 4%,rgba(153,181,180,.14),transparent 40%); }
+.bl27-eyebrow,.bl27-kicker { margin:0 0 15px; letter-spacing:.19em; font-size:11px; font-weight:800; text-transform:uppercase; }
+.bl27-eyebrow { color:#bbd0cd; }
+.bl27-hero h1 { margin:0; color:#fff; font-size:clamp(36px,4.7vw,61px); line-height:1.08; font-weight:800; letter-spacing:-.048em; }
+.bl27-hero h1 em { font-style:normal; color:#c4ded5; }
+.bl27-hero-lede { font-size:clamp(23px,2.8vw,34px); margin:16px 0; font-weight:750; letter-spacing:-.035em; color:#fff; }
+.bl27-hero-desc { font-size:16px; line-height:1.75; max-width:670px; color:#dce7ea; margin:0; }
+.bl27-hero-actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:27px; }
+.bl27-button { display:inline-flex; align-items:center; justify-content:center; gap:13px; border-radius:9px; border:1px solid transparent; padding:13px 19px; font-size:14px; font-weight:800; text-decoration:none; transition:transform .16s ease, background-color .16s ease, border-color .16s ease; }
+.bl27-button:hover { transform:translateY(-2px); }
+.bl27-button-primary { background:#c4d9c9; color:#1f3640 !important; }
+.bl27-button-primary:hover { background:#e0eadd; }
+.bl27-button-outline { border-color:#829ba1; color:#fff !important; }
+.bl27-button-outline:hover { background:rgba(255,255,255,.12); }
+.bl27-hero-note { margin:17px 0 0; color:#bcd0d6; font-size:12px; }
+.bl27-event { padding:44px 34px 38px; background:linear-gradient(153deg,#355763,#294650); display:flex; flex-direction:column; justify-content:center; min-width:0; }
+.bl27-event-label { font-size:10px; letter-spacing:.16em; font-weight:850; color:#bcd5ce; }
+.bl27-event-big { font-size:clamp(85px,11vw,145px); line-height:1; font-weight:900; letter-spacing:-.09em; color:#f3f7f1; margin:20px 0 25px; }
+.bl27-event-divider { border-top:1px solid rgba(236,246,240,.2); margin-bottom:26px; }
+.bl27-event-meta { display:flex; align-items:flex-start; gap:14px; margin-bottom:25px; color:#f5f8f5; }
+.bl27-event-symbol { font-size:27px; opacity:.86; line-height:1; }
+.bl27-event-meta strong,.bl27-event-meta small { display:block; }
+.bl27-event-meta strong { font-size:17px; line-height:1.25; }
+.bl27-event-meta small { font-size:13px; color:#c1d3d3; margin-top:5px; }
+.bl27-event-foot { color:#c4d3d7; font-size:12px; border-top:1px solid rgba(236,246,240,.2); padding-top:20px; }
+.bl27-section { padding:65px 0 0; }
+.bl27-section-header { max-width:760px; margin-bottom:27px; }
+.bl27-kicker { color:#5f8071; margin-bottom:9px; }
+.bl27-section h2,.bl27-final-cta h2 { margin:0 0 12px; color:#273942; font-size:clamp(25px,3.2vw,37px); line-height:1.18; font-weight:800; }
+.bl27-section-header > p:last-child { color:#60717a; font-size:16px; margin:0; }
+.bl27-steps { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:15px; }
+.bl27-step { border-radius:13px; border:1px solid #dfdfd8; background:#fff; padding:27px; box-shadow:0 5px 18px rgba(20,44,54,.04); }
+.bl27-step-num { font-weight:900; font-size:29px; letter-spacing:-.04em; color:#79938a; margin-bottom:17px; }
+.bl27-step h3,.bl27-feature-grid h3 { font-size:18px; margin:0 0 10px; font-weight:800; }
+.bl27-step p,.bl27-feature-grid p { margin:0; color:#5b6b73; font-size:14px; line-height:1.7; }
+.bl27-highlights { margin-top:5px; }
+.bl27-feature-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:15px; }
+.bl27-feature-grid article { background:#e9efeb; border-radius:13px; padding:24px 21px; }
+.bl27-feature-icon { display:inline-flex; align-items:center; justify-content:center; width:41px; height:41px; background:#d1ded4; border-radius:11px; font-size:24px; font-weight:700; color:#355647; margin-bottom:18px; }
+.bl27-tour { display:grid; grid-template-columns:minmax(0,2fr) minmax(230px,.8fr); gap:32px; align-items:center; }
+.bl27-tour p:not(.bl27-kicker) { line-height:1.75; color:#586972; max-width:760px; }
+.bl27-text-link { display:inline-block; font-weight:750; margin-top:8px; }
+.bl27-tour-aside { background:#fff; border:1px solid #dedfd9; border-radius:15px; padding:31px; display:flex; flex-direction:column; }
+.bl27-tour-stat { display:block; font-size:66px; font-weight:900; color:#315566; line-height:1.1; letter-spacing:-.07em; }
+.bl27-tour-aside strong { color:#273942; font-size:16px; }
+.bl27-tour-aside > span:not(.bl27-tour-stat) { font-size:13px; color:#69767c; }
+.bl27-tour-rule { border-top:1px solid #e4e7e2; margin:20px 0; }
+.bl27-faq details { border-bottom:1px solid #d7ddd8; background:#fff; }
+.bl27-faq details:first-of-type { border-radius:12px 12px 0 0; }
+.bl27-faq details:last-of-type { border-radius:0 0 12px 12px; }
+.bl27-faq summary { cursor:pointer; padding:19px 23px; font-weight:750; color:#283c46; line-height:1.4; }
+.bl27-faq details[open] summary { border-bottom:1px solid #e9ede9; }
+.bl27-faq details p { padding:8px 23px 21px; margin:0; color:#5a6b74; line-height:1.7; font-size:14px; }
+.bl27-final-cta { margin-top:67px; background:#305462; border-radius:16px; padding:35px 40px; display:flex; align-items:center; justify-content:space-between; gap:25px; }
+.bl27-final-cta h2 { color:#fff; }
+.bl27-final-cta p { color:#dce8e9; max-width:720px; line-height:1.65; margin:0; }
+.bl27-final-cta .bl27-kicker { color:#cee4dc; margin-bottom:9px; }
+.bl27-button-light { background:#fff; color:#315260 !important; flex-shrink:0; }
+.bl27-button-light:hover { background:#e8f0e9; }
+@media(max-width:980px) { .bl27-hero {grid-template-columns:1fr;} .bl27-event{padding:27px 38px; display:grid; grid-template-columns:1fr 1fr; gap:10px 22px; align-items:center;} .bl27-event-big{font-size:74px; grid-row:span 2; margin:0;} .bl27-event-divider{display:none;} .bl27-event-meta{margin:0;} .bl27-event-foot{grid-column:span 2;} .bl27-feature-grid{grid-template-columns:repeat(2,1fr);} }
+@media(max-width:660px) { .bl27-layout{padding:14px 15px 42px;} .bl27-hero-copy{padding:30px 22px;} .bl27-hero-desc{font-size:15px;} .bl27-hero-actions{flex-direction:column;} .bl27-button{width:100%;} .bl27-event{display:flex;align-items:stretch; padding:27px 23px;} .bl27-event-big{margin:13px 0;} .bl27-event-meta{margin:9px 0;} .bl27-section{padding-top:46px;} .bl27-steps,.bl27-feature-grid,.bl27-tour{grid-template-columns:1fr;} .bl27-step{padding:23px;} .bl27-final-cta{margin-top:45px; padding:29px 22px; flex-direction:column;align-items:stretch;} .bl27-tour-aside{flex-direction:column;} }
+@media(prefers-reduced-motion:reduce) { .bl27-button{transition:none;} .bl27-button:hover{transform:none;} }

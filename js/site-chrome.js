@@ -37,6 +37,7 @@
 
   const globalNav = [
     { label: "HOME", href: "index.html" },
+    { label: "2027 FANTASY", href: "2027-ncaa-wrestling-fantasy/index.html" },
     { label: "COLLEGE", href: "college/index.html" },
     { label: "RESULTS", href: "posted/index.html" },
     { label: "CREATE", href: "new_league/index.html" },
@@ -123,7 +124,7 @@
   if (footerRoot) {
     footerRoot.innerHTML = `
       <footer class="footer" aria-label="Site footer">
-        Developed by White Blaze Analytics LLC
+        Developed by <a href="https://www.whiteblazeanalytics.com/" target="_blank" rel="noopener noreferrer">White Blaze Analytics LLC</a>
       </footer>
     `;
   }
