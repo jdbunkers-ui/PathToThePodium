@@ -94,7 +94,7 @@
     root.innerHTML = `<section class="form-card account-card">
       <h2>Sign in to manage your leagues</h2>
       <p>Create a free account to create a league and prepare your teams.</p>
-      <p>Public leagues and paid-league scoreboards are available to everyone.</p>
+      <p>Public leagues and fantasy scoreboards are available to everyone without signing in.</p>
       <div class="actions"><a class="btn primary" href="${escape(accountLink())}">Sign in</a>
       <a class="btn" href="${escape(accountLink("register"))}">Create account</a></div>
       <p class="helper-text"><a href="${escape(buildRepoLink("index.html"))}">Browse public leagues</a></p>
