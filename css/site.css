@@ -575,6 +575,9 @@ p {
   background: transparent;
 }
 
+.footer a { color: #456775; font-weight: 650; text-decoration: underline; text-underline-offset: 3px; }
+.footer a:hover, .footer a:focus-visible { color: #254956; }
+
 /* =========================================================
    Responsive
    ========================================================= */
