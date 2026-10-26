@@ -44,29 +44,53 @@
       <section class="stack-md">
 
         <section class="content-card">
-          <h2>How the fantasy leagues work</h2>
+          <h2>Free fantasy wrestling scoring, built for your league</h2>
           <p>
-            Bracket Leaders lets college wrestling fans compete in fantasy leagues scored using real
-            tournament results. Each team earns points based on its drafted wrestlers' performances.
+            Bracket Leaders makes it easy for friends, coworkers, and wrestling fans to follow their
+            own fantasy leagues during major college wrestling tournaments. New commissioner leagues
+            include scoring at no charge: no league fee, no credit card, and no payment required.
+            Previously created leagues retain their existing access settings.
           </p>
           <p>
-            Leagues conduct their drafts independently. Commissioners manage league setup and team
-            roster submissions, while participants can follow results and standings without an account
-            once league scoring is available.
+            As wrestlers earn points in real tournament matches, Bracket Leaders processes results
+            and reflects supported advancement, placement, and bonus scoring in fantasy league standings.
+            Share a link so everyone can follow the competition from anywhere.
           </p>
         </section>
 
         <section class="content-card">
-          <h2>How to create a league</h2>
+          <h2>Your draft. One commissioner. Everyone can follow.</h2>
           <p>
-            Hold your league's wrestler draft independently, outside Bracket Leaders.
-            Bracket Leaders does not host or conduct drafts.
+            Gather your league and hold a live wrestler draft in person or however your group prefers.
+            Drafts happen independently; Bracket Leaders does not host the draft itself.
           </p>
           <p>
-            The commissioner must create a Bracket Leaders account, set up the league, and submit
-            each team's finalized wrestler roster for processing once roster entry opens.
-            Individual league participants do not need an account to view league results and standings.
+            One commissioner creates an account, sets up the league, and uploads each fantasy team's
+            completed wrestler roster through the app when roster entry opens. Individual participants
+            don't need an account to view public results and league standings.
           </p>
+          <p><a href="../new_league/index.html">Create a free fantasy league &rarr;</a></p>
+        </section>
+
+        <section class="content-card">
+          <h2>See past fantasy leagues</h2>
+          <p>
+            Browse published Bracket Leaders results from 2025 onward, including the FloWrestling
+            fantasy league and the LMCC fantasy league. The LMCC competition has been a tradition
+            since 2018, although the site's published historical results begin in 2025.
+          </p>
+          <p><a href="../index.html#leagues">Browse leagues and historical standings &rarr;</a></p>
+        </section>
+
+        <section class="content-card">
+          <h2>Want to support Bracket Leaders?</h2>
+          <p>
+            Bracket Leaders is free and donations are never required. If you've enjoyed using the
+            site and would voluntarily like to help with ongoing development and hosting,
+            you can find us on Venmo at
+            <a href="https://venmo.com/u/whiteblazeanalytics" target="_blank" rel="noopener noreferrer">@whiteblazeanalytics</a>.
+          </p>
+          <p class="helper-text">Donations are entirely optional and do not change access or scoring.</p>
         </section>
 
         <section class="content-card">
